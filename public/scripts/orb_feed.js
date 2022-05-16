@@ -247,36 +247,36 @@ function join_url() {
 
 // TOGGLE SEARCH
 
-function toggle_search() {
+// function toggle_search() {
 
-    var actor_parent = document.getElementById("body-headers");
+//     var actor_parent = document.getElementById("body-headers");
 
-    if (search_panel.className == "search-panel-hidden") {
+//     if (search_panel.className == "search-panel-hidden") {
 
-        actor_parent.className = "hidden";
-        var conn_button = document.getElementById("conn-button");
-        var conn_code_div = document.getElementById("conn");
+//         actor_parent.className = "hidden";
+//         var conn_button = document.getElementById("conn-button");
+//         var conn_code_div = document.getElementById("conn");
 
-        if (conn_code_div.className = "conn-visible") {
-            conn_button.src = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAAEaElEQVRogdXaW+gUZRjH8c9/WzvYCSotMS3SMkvJsnNZkBFBYViYF0UmhVmUnQjFoIjKootOghVlpRddmEbYwS4iypKSsgslIROyMisxo4OhWX+7eHb7z3+dnd3ZGQ99YdjZ2XeeZ37zvvO+z/PMdk2ZMkUJHIAJuAQn4xhUsQGr8REW4tsynKVRLcHG7ZiBo1J+G1bbxuMxzMb9+K0Ev72oFDj3SHyMJ6WLaGQf3IG1uKCA31Q6FXI4VuDsDs7thw8wtkPfqXQipEv0xMCCvt/F0QVt/EcnQp7C8SX5f70kO7mFDMBtZTnHaDERFCavkGllOG3g3jKM5BVyZRlOGxiNQUWN5BHSDycUddiE04oayCNkeFFnGQwoaiCPkAOLOstgv6IG8gj5uaizDP4oaiCPkC+wvajDJhQOJvMI2YLPizpMoRufFTWSd/qdX9RhCm/il6JG8gqZi61FnTbwQBlG8grZptwQZZ6ShmsnQeMLWFCC768xuQQ76DwfmYi3CvhdJ3KZHQVs9KJIhng5nujgvLcxChsz2vTHmSL5GqONtKGIELgLZ2FxG20/FQWKy/BrkzbXYAm+wXKRfC3FGrGOPaRJWt1VUhWFCCgvwggMQR98h1VYVruwZozCs+KmtOJPUeyYnTzYSRVlMGaK+OhubK4dX1PbWlERi2CdK+TLFPviaZyOSUmj7XIwHsFXuAnXi4rIg+KOtmIYHsZJiWPn6TzdvU7MoGh/aI3HHNlln1WisrIO34u73l/04Ck4Fz/gOLGoVsWz0jengEbG4Y12htajmN5Gu5G1LYtJeiKDGbJFdGOReOaycqEX0a+VkNeUVBzA72IWIiaCGS3aT8XzYviv1zz5OgITs4QswaXtX2dLVupZAM/XOlH7svbZrXXidVUzIfOUK4J4huo0K5luFb2wWUzddWaKguAEnJhy3sg0IXeKGaFsNiT2mw2TW/BSyvHnap/3YZMo2SYZ3Dj9DsHjea+wTboS+6XFWHV7jT2ysGQHSZK98FOTNnNwqhha80SETKxbA3G1nXsD1ieFTNDewtYpIxL7S5u02V9PvvOeHiGzcFiG7ZXJobWrhlSdUYn9D0XMlMXQxP62Fm0X1YWMUWKJvwkH4eLa/nax0GbxjAhBVsgu4G3CgrqQm4tcYQ6Si+As2b2yL27Qupw6GTsqYlyOK3R57TNWT6j+j3h5WoS5ogqjgjPs2nJoI68m9peJML4T5uPG+pcKLixwUZ0wCC8nvi8W+fsnbZ6/ReRBk5IHKyJP2N1MEq/w6izHOSLVfUd67aye6g6VMsNWxWvmPcE0sTbcqieHf6W29cexIpn7S+Qxa7OMVZX3YrMTrhUP/HS9h9tG2VWWnaiIeH5P0l8EiqtF+XQsDm1o00csqFM1WVOqegdze5LhIrol/uLxo3iwq+Jm1wW8L4ZaL6p6VzT2Fg6pbWmkLqJFC3R7gtQRVBGhwP+J1JtfUcKLyN3M32kHqyKQu8fe3zPdIgrYkPbjv0VwvXuCF5gmAAAAAElFTkSuQmCC";
-            conn_code_div.className = "conn-hidden";
-            conn_visible = 0;
-        } 
+//         if (conn_code_div.className = "conn-visible") {
+//             conn_button.src = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAAEaElEQVRogdXaW+gUZRjH8c9/WzvYCSotMS3SMkvJsnNZkBFBYViYF0UmhVmUnQjFoIjKootOghVlpRddmEbYwS4iypKSsgslIROyMisxo4OhWX+7eHb7z3+dnd3ZGQ99YdjZ2XeeZ37zvvO+z/PMdk2ZMkUJHIAJuAQn4xhUsQGr8REW4tsynKVRLcHG7ZiBo1J+G1bbxuMxzMb9+K0Ev72oFDj3SHyMJ6WLaGQf3IG1uKCA31Q6FXI4VuDsDs7thw8wtkPfqXQipEv0xMCCvt/F0QVt/EcnQp7C8SX5f70kO7mFDMBtZTnHaDERFCavkGllOG3g3jKM5BVyZRlOGxiNQUWN5BHSDycUddiE04oayCNkeFFnGQwoaiCPkAOLOstgv6IG8gj5uaizDP4oaiCPkC+wvajDJhQOJvMI2YLPizpMoRufFTWSd/qdX9RhCm/il6JG8gqZi61FnTbwQBlG8grZptwQZZ6ShmsnQeMLWFCC768xuQQ76DwfmYi3CvhdJ3KZHQVs9KJIhng5nujgvLcxChsz2vTHmSL5GqONtKGIELgLZ2FxG20/FQWKy/BrkzbXYAm+wXKRfC3FGrGOPaRJWt1VUhWFCCgvwggMQR98h1VYVruwZozCs+KmtOJPUeyYnTzYSRVlMGaK+OhubK4dX1PbWlERi2CdK+TLFPviaZyOSUmj7XIwHsFXuAnXi4rIg+KOtmIYHsZJiWPn6TzdvU7MoGh/aI3HHNlln1WisrIO34u73l/04Ck4Fz/gOLGoVsWz0jengEbG4Y12htajmN5Gu5G1LYtJeiKDGbJFdGOReOaycqEX0a+VkNeUVBzA72IWIiaCGS3aT8XzYviv1zz5OgITs4QswaXtX2dLVupZAM/XOlH7svbZrXXidVUzIfOUK4J4huo0K5luFb2wWUzddWaKguAEnJhy3sg0IXeKGaFsNiT2mw2TW/BSyvHnap/3YZMo2SYZ3Dj9DsHjea+wTboS+6XFWHV7jT2ysGQHSZK98FOTNnNwqhha80SETKxbA3G1nXsD1ieFTNDewtYpIxL7S5u02V9PvvOeHiGzcFiG7ZXJobWrhlSdUYn9D0XMlMXQxP62Fm0X1YWMUWKJvwkH4eLa/nax0GbxjAhBVsgu4G3CgrqQm4tcYQ6Si+As2b2yL27Qupw6GTsqYlyOK3R57TNWT6j+j3h5WoS5ogqjgjPs2nJoI68m9peJML4T5uPG+pcKLixwUZ0wCC8nvi8W+fsnbZ6/ReRBk5IHKyJP2N1MEq/w6izHOSLVfUd67aye6g6VMsNWxWvmPcE0sTbcqieHf6W29cexIpn7S+Qxa7OMVZX3YrMTrhUP/HS9h9tG2VWWnaiIeH5P0l8EiqtF+XQsDm1o00csqFM1WVOqegdze5LhIrol/uLxo3iwq+Jm1wW8L4ZaL6p6VzT2Fg6pbWmkLqJFC3R7gtQRVBGhwP+J1JtfUcKLyN3M32kHqyKQu8fe3zPdIgrYkPbjv0VwvXuCF5gmAAAAAElFTkSuQmCC";
+//             conn_code_div.className = "conn-hidden";
+//             conn_visible = 0;
+//         } 
         
-        navigation_panel.className = "navigation-panel-hidden";
-        global_east_panel.className = "global-east-panel-hidden";
-        search_panel.className = "search-panel";
+//         navigation_panel.className = "navigation-panel-hidden";
+//         global_east_panel.className = "global-east-panel-hidden";
+//         search_panel.className = "search-panel";
 
-    } else {
+//     } else {
 
-        global_east_panel.className = "global-east-panel";
-        navigation_panel.className = "navigation-panel";
-        search_panel.className = "search-panel-hidden";
-        actor_parent.className = "global-headers";
+//         global_east_panel.className = "global-east-panel";
+//         navigation_panel.className = "navigation-panel";
+//         search_panel.className = "search-panel-hidden";
+//         actor_parent.className = "global-headers";
 
-    }
+//     }
     
-}
+// }
 
 //
 
@@ -666,7 +666,7 @@ function db_action() {
     if (post_message !== '') {
 
         var panel = document.getElementById("global-east-panel");
-        var search_parent = document.getElementById("search-panel");
+        // var search_parent = document.getElementById("search-panel");
 
         var actor_parent = document.getElementById("body-headers");
         var nav_parent = document.getElementById("navigation-panel");
@@ -677,7 +677,8 @@ function db_action() {
         panel.className = "hidden";
         actor_parent.className = "hidden";
         nav_parent.className = "hidden";
-        search_parent.className = "search-panel-hidden";
+        // search_parent.className = "search-panel-hidden";
+        global_east_panel.appendChild(loading_icon);
         // const loading_screen = document.getElementById("loading");
         // loading_screen.className = "loading";
 
@@ -685,18 +686,8 @@ function db_action() {
 
         if (selectedFiles === undefined || selectedFiles.length == 0) {
 
-            if (comments_visible == 1) {
-
-                var post_metadata = document.getElementById("comment-headers").getAttribute('metadata');
-                
-                var submit_url = "/post?id=" + encodeURIComponent(post_metadata) + "&content=" + encodeURIComponent(encoded_message) + '&uuk=' + encodeURIComponent(uuk) + "&key=" + encodeURIComponent(readCookie("hashpass")) + "";
+        var submit_url = "/post?id=0&content=" + encodeURIComponent(encoded_message) + '&uuk=' + encodeURIComponent(uuk) + "&key=" + encodeURIComponent(readCookie("hashpass")) + "";
         
-            } else {
-        
-                var submit_url = "/post?id=0&content=" + encodeURIComponent(encoded_message) + '&uuk=' + encodeURIComponent(uuk) + "&key=" + encodeURIComponent(readCookie("hashpass")) + "";
-        
-            }
-
             $.ajax({
 
                 type: 'GET',
@@ -722,6 +713,8 @@ function db_action() {
                 // SHOULD NEVER GET HERE (UNTIL WE DO) (TEXT REQUIRED ATM)
                 var file_actions = '';
 
+                file_actions = file_actions.concat('+', new_filename);
+
                 for (var i = 0; i < selectedFiles.length; i++) {
 
                     var new_filename_title = md5_files[i];
@@ -745,18 +738,8 @@ function db_action() {
                             processData: false,
                             success: function(data) {
 
-                                    if (comments_visible == 1) {
-
-                                        var post_metadata = document.getElementById("comment-headers").getAttribute('metadata');
-                                        
-                                        var submit_url = "/post?id=" + encodeURIComponent(post_metadata) + "&content=" + encodeURIComponent(encoded_message) + '&uuk=' + encodeURIComponent(uuk) + "&key=" + encodeURIComponent(readCookie("hashpass")) + "";
-                                
-                                    } else {
-                                
-                                        var submit_url = "/post?id=0&fileactions=" + encodeURIComponent(file_actions) + '&uuk=' + encodeURIComponent(uuk) + "&key=" + encodeURIComponent(readCookie("hashpass")) + "";
-                                
-                                    }
-
+                                    var submit_url = "/post?id=0"  + "&content=" + encodeURIComponent(encoded_message) + "&fileactions=" + encodeURIComponent(file_actions) + '&uuk=' + encodeURIComponent(uuk) + "&key=" + encodeURIComponent(readCookie("hashpass")) + "";
+                            
                                     $.ajax({
 
                                         type: 'GET',
@@ -798,17 +781,9 @@ function db_action() {
 
                     form_data.append('file', selectedFiles[i], new_filename);
 
-                    if (comments_visible == 1) {
+                    file_actions = file_actions.concat('+', new_filename);
 
-                        var post_metadata = document.getElementById("comment-headers").getAttribute('metadata');
-                        
-                        var submit_url = "/post?id=" + encodeURIComponent(post_metadata) + "&content=" + encodeURIComponent(encoded_message) + '&uuk=' + encodeURIComponent(uuk) + "&key=" + encodeURIComponent(readCookie("hashpass")) + "";
-                
-                    } else {
-                
-                        var submit_url = "/post?id=0&fileactions=" + encodeURIComponent(file_actions) + '&uuk=' + encodeURIComponent(uuk) + "&key=" + encodeURIComponent(readCookie("hashpass")) + "";
-                
-                    }
+                    var submit_url = "/post?id=0&content=" + encodeURIComponent(encoded_message) + "&fileactions=" + encodeURIComponent(file_actions) + '&uuk=' + encodeURIComponent(uuk) + "&key=" + encodeURIComponent(readCookie("hashpass")) + "";
 
                     try {
 
@@ -822,6 +797,8 @@ function db_action() {
                             cache: false,
                             processData: false,
                             success: function(data) {
+
+                                console.log(submit_url);
 
                                 $.ajax({
 
@@ -850,8 +827,6 @@ function db_action() {
                         // means that either a media post failed or the summary post failed
 
                     }
-
-                    file_actions = file_actions.concat('+', new_filename);
 
                 }
 
@@ -1204,20 +1179,12 @@ function get_posts(id, count) {
                 // var post_like_button = post_container.querySelector('[title="' + current_id + '-like"]');
                 var post_like_button = post_container.querySelector("[metadata='" + current_id + "-like']");
                 // var post_comment_button = post_container.querySelector('[title="' + current_id + '-comment"]');
-                var post_comment_button = post_container.querySelector("[metadata='" + current_id + "-comment']");
+                // var post_comment_button = post_container.querySelector("[metadata='" + current_id + "-comment']");
 
                 post_like_button.addEventListener('pointerdown', function(e) {
 
                     e.preventDefault();
                     reaction(0, this);
-            
-                });
-
-                post_comment_button.addEventListener('pointerdown', function(e) {
-
-                    e.preventDefault();
-                    update_in_progress = 1;
-                    get_comments(comment_id, 10, this);
             
                 });
 
@@ -1268,254 +1235,7 @@ function get_posts(id, count) {
 
                 }
 
-                var next_task = get_posts(next_id, count, object);
-    
-            }
-
-        }
-
-    });
-
-}
-
-//
-
-//
-
-//
-
-//
-
-//
-
-//
-
-//
-
-//
-
-//
-
-//
-
-//
-
-//
-
-//
-
-//
-
-// .d8888b.  8888888888 88888888888                                                                
-// d88P  Y88b 888            888                                                                    
-// 888    888 888            888                                                                    
-// 888        8888888        888                                                                    
-// 888  88888 888            888                                                                    
-// 888    888 888            888                                                                    
-// Y88b  d88P 888            888                                                                    
-//  "Y8888P88 8888888888     888                                                                    
-
-//  .d8888b.   .d88888b.  888b     d888 888b     d888 8888888888 888b    888 88888888888  .d8888b.  
-// d88P  Y88b d88P" "Y88b 8888b   d8888 8888b   d8888 888        8888b   888     888     d88P  Y88b 
-// 888    888 888     888 88888b.d88888 88888b.d88888 888        88888b  888     888     Y88b.      
-// 888        888     888 888Y88888P888 888Y88888P888 8888888    888Y88b 888     888      "Y888b.   
-// 888        888     888 888 Y888P 888 888 Y888P 888 888        888 Y88b888     888         "Y88b. 
-// 888    888 888     888 888  Y8P  888 888  Y8P  888 888        888  Y88888     888           "888 
-// Y88b  d88P Y88b. .d88P 888   "   888 888   "   888 888        888   Y8888     888     Y88b  d88P 
-//  "Y8888P"   "Y88888P"  888       888 888       888 8888888888 888    Y888     888      "Y8888P"  
-
-// GET COMMENTS
-
-var comment_id = "-1";
-var comment_counter = 0;
-var stored_next_comment_id = "";
-var comments_visible = 0;
-
-function get_comments(id, count, object) {
-
-    mode = 1;
-
-    var cookie = document.cookie;
-    var loading_icon = document.getElementById("loading-icon");
-    var actor_textarea = document.getElementById("post-input");
-    var actor_post_button = document.getElementById("post-button");
-
-    try {
-        var selected_post_id = object.getAttribute('metadata');
-    } catch {
-        var selected_post_id = comment_id;
-    }
-
-    
-
-    loading_icon.className = "loading-icon";
-
-    if (comments_visible == 0) {
-
-        comments_visible = 1;
-
-        actor_textarea.placeholder = "Add a comment..";
-
-        var all_posts = document.getElementById("posts");
-    
-        all_posts.remove();
-
-    }
-
-    // var like_button = document.getElementById(selected_post_id.split("-")[0] + '-like');
-    // var like_count = document.querySelector("[metadata='" + selected_post_id.split("-")[0] + "-count']");
-
-    // var actor = document.getElementById("body-headers");
-    // actor.className = "global-headers";
-
-
-
-
-
-
-
-
-    // var actor = document.getElementById("body-headers");
-    // actor.className = "global-headers";
-
-    // var focused_element = document.createElement("div");
-    // var post_actor = document.getElementById("body-headers");
-
-    // comment_actor = post_actor.cloneNode(true);
-    // focused_element = selected_post.cloneNode(true);
-    // comment_actor.className = "global-headers";
-
-    // global_east_panel.className = "global-east-panel-hidden";
-
-    // var comment_container = document.createElement("div");
-    // comment_container.id = "comments";
-    // comment_container.className = "global-comment-panel";
-
-    // // comment_container.appendChild(comment_actor);
-    // comment_container.appendChild(selected_post);
-    // document.body.appendChild(comment_container);
-    
-
-    console.log(stored_next_comment_id);
-    if (stored_next_comment_id == "-1") {
-
-        console.log("no comments");
-        return null
-
-    }
-
-    comment_counter++;
-    
-    $.ajax({
-
-        type: 'GET',
-        url: '/comments?post=' + encodeURIComponent(selected_post_id.split("-")[0]) + '&id=' + id + '&key=' + encodeURIComponent(readCookie("hashpass")),
-        timeout: 60000,
-        contentType: false,
-        cache: false,
-        processData: false,
-        success: function(data) {
-
-            var retrieved_comments = data['content'];
-            var current_id = data['cid'];
-            var next_id = data['nid'];
-            
-
-            if (next_id == "0") {
-
-                stored_next_comment_id = "-1";
-
-            } else {
-
-                stored_next_comment_id = next_id;
-            }
-
-            if (comment_counter == count) {
-
-                next_id = "0";
-
-            }
-
-            function display_comment() {
-
-                global_east_panel.className = "global-east-panel";
-
-                var comment_div = document.createElement("div");
-                comment_div.id = "comment-headers";
-                comment_div.className = "global-east-content-container-gone";
-                comment_div.setAttribute("metadata", current_id + "-comment");
-
-                comment_div.innerHTML = retrieved_comments;
-
-                global_east_panel.appendChild(comment_div);
-                global_east_panel.appendChild(loading_icon);
-                
-                // var comment_like_button = comment_container.querySelector('[title="' + current_id + '-like"]');
-                var comment_like_button = global_east_panel.querySelector("[metadata='" + current_id + "-like']");
-                // var comment_comment_button = comment_container.querySelector('[title="' + current_id + '-comment"]');
-                
-                comment_like_button.addEventListener('pointerdown', function(e) {
-
-                    e.preventDefault();
-                    reaction(0, this);
-            
-                });
-
-                // comment_comment_button.addEventListener('pointerdown', function(e) {
-
-                //     e.preventDefault();
-                //     // comment(0, this);
-            
-                // });
-
-                setTimeout(() => {
-
-                    comment_div.className = "global-east-content-container-hidden";
-
-                    setTimeout(() => {
-
-                        comment_div.className = "global-east-content-container-loaded";
-        
-                    }, 50);
-
-                }, 50);
-
-            }
-
-            if (next_id == "0") {
-
-                comment_counter = 0;
-                update_in_progress = 0;
-                display_comment();
-                loading_icon.className = "loading-hidden";
-
-            } else if (next_id == "-1") {
-
-                comment_counter = 0;
-                update_in_progress = 0;
-                loading_icon.className = "loading-hidden";
-
-            } else {
-
-                display_comment();
-
-                if (loading_icon.className != "loading-done") {
-
-                    setTimeout(() => {
-
-                        loading_icon.className = "loading-hidden";
-
-                        setTimeout(() => {
-
-                            loading_icon.className = "loading-done";
-            
-                        }, 2000);
-        
-                    }, 500);
-
-                }
-
-                var next_comment_task = get_comments(next_id, count, object);
+                var next_task = get_posts(next_id, count);
     
             }
 
@@ -1577,11 +1297,11 @@ const post_button = document.getElementById("post-button");
 const actor = document.getElementById("body-headers");
 const hand_button = document.getElementById("hand-button-icon");
 const home_button = document.getElementById("home-button");
-const search_button = document.getElementById("search-button");
+// const search_button = document.getElementById("search-button");
 const global_east_panel = document.getElementById("global-east-panel");
 const navigation_panel = document.getElementById("navigation-panel");
-const search_panel = document.getElementById("search-panel");
-const close_search_button = document.getElementById("close-search");
+// const search_panel = document.getElementById("search-panel");
+// const close_search_button = document.getElementById("close-search");
 const actor_div = document.getElementById("body-headers");
 
 //
@@ -1636,19 +1356,19 @@ hand_button.addEventListener('pointerdown', function(e) {
 
 });
 
-search_button.addEventListener('pointerdown', function(e) {
+// search_button.addEventListener('pointerdown', function(e) {
 
-    e.preventDefault();
-    toggle_search();
+//     e.preventDefault();
+//     toggle_search();
 
-});
+// });
 
-close_search_button.addEventListener('pointerdown', function(e) {
+// close_search_button.addEventListener('pointerdown', function(e) {
 
-    e.preventDefault();
-    toggle_search();
+//     e.preventDefault();
+//     toggle_search();
 
-});
+// });
 
 post_button.addEventListener('click', function(e) {
 
@@ -1728,7 +1448,6 @@ global_east_panel.addEventListener('touchend', function(e){ swipeEnd(e); }, fals
 
 var update_in_progress = 0;
 var lastScrollTop = 0;
-var mode = 0;
 
 global_east_panel.addEventListener('scroll', function() {
 var st = window.pageYOffset || global_east_panel.scrollTop;
@@ -1739,11 +1458,8 @@ if (st > current_height - 1 && update_in_progress == 0) {
 
     update_in_progress = 1;
 
-    if (mode = 0) {
-        get_posts(stored_next_id, 1);
-    } else {
-        get_comments(stored_next_comment_id, 1);
-    }
+    get_posts(stored_next_id, 1);
+
 
 }
 
