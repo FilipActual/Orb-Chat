@@ -431,7 +431,85 @@ def orb_join():
         style = url_for('static', filename='styles/orb_invalid.css')
         script = url_for('static', filename='scripts/orb_invalid.js')
 
-        return ui_code.format(style, script, join_key)
+        return ui_code.format(style, script)
+
+#
+
+#
+
+#
+
+#
+
+#
+
+#
+
+#
+
+#
+
+#
+
+#
+
+#
+
+#
+
+#
+
+#
+
+#
+
+#
+
+#  .d8888b.  888    888 8888888888  .d8888b.  888    d8P  
+# d88P  Y88b 888    888 888        d88P  Y88b 888   d8P   
+# 888    888 888    888 888        888    888 888  d8P    
+# 888        8888888888 8888888    888        888d88K     
+# 888        888    888 888        888        8888888b    
+# 888    888 888    888 888        888    888 888  Y88b   
+# Y88b  d88P 888    888 888        Y88b  d88P 888   Y88b  
+#  "Y8888P"  888    888 8888888888  "Y8888P"  888    Y88b 
+                                                        
+                                                        
+                                                        
+#  .d8888b.  888b    888                                  
+# d88P  Y88b 8888b   888                                  
+# Y88b.      88888b  888                                  
+#  "Y888b.   888Y88b 888                                  
+#     "Y88b. 888 Y88b888                                  
+#       "888 888  Y88888                                  
+# Y88b  d88P 888   Y8888                                  
+#  "Y8888P"  888    Y888                                  
+              
+# USER REG
+
+@application.route('/checksn', methods=['GET'])
+def orb_check_sn():
+
+    user_id = request.args['sn']
+    join_key = request.args['joinkey']
+
+    with open('/root/Orb-Chat/orb_resources/orb_access_keys.json','r') as orb_access_keys_path:
+                                
+        orb_access_keys = json.load(orb_access_keys_path)
+
+    if join_key in orb_access_keys.keys():
+
+        with open('/root/Orb-Chat/orb_resources/orb_screennames.json','r') as orb_screennames_path:
+                                
+            orb_screennames = json.load(orb_screennames_path)
+
+        if user_id in orb_screennames.keys():
+
+            return {"message": "fail"}
+
+        else:
+
+            return {"message": "available"}
 
 #
 
@@ -489,7 +567,6 @@ def orb_join():
 
 @application.route('/reg', methods=['GET'])
 def orb_reg():
-    pass
 
     uuk = request.args['uuk']
     user_id = request.args['sn']
@@ -497,6 +574,8 @@ def orb_reg():
     user_key = request.args['key']
     user_image = request.args['img']
     join_key = request.args['joinkey']
+
+    user_likes_path = '/root/Orb-Chat/public/likes/' + uuk + '.json'
 
     with open('/root/Orb-Chat/orb_resources/orb_access_keys.json','r') as orb_access_keys_path:
                                 
@@ -560,6 +639,46 @@ def orb_reg():
             with open('/root/Orb-Chat/orb_resources/orb_users.json','w') as orb_users_path:
                                 
                 json.dump(orb_users, orb_users_path)
+
+            with open('/root/Orb-Chat/orb_resources/orb_screennames.json','r') as orb_screennames_path:
+                                
+                orb_screennames = json.load(orb_screennames_path)
+
+            if user_id in orb_screennames.keys():
+
+                return {"message": "fail"}
+
+            else:
+
+                orb_screennames[user_id] = []
+
+                with open('/root/Orb-Chat/orb_resources/orb_screennames.json','w') as orb_screennames_path:
+                                    
+                    json.dump(orb_screennames, orb_screennames_path)
+
+
+            if os.path.exists(user_likes_path):
+
+                pass
+            
+            else:
+
+                with open(user_likes_path, 'w'):
+                    pass
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
             return {"message": "success"}
 
@@ -908,6 +1027,9 @@ def send_posts():
                                 
         orb_allowed_peers = json.load(orb_allowed_peers_path)
 
+    unique_user_key = orb_allowed_peers[user_key][0]
+    user_likes_path = '/root/Orb-Chat/public/likes/' + unique_user_key + '.json'
+
     if user_key in orb_allowed_peers.keys():
 
         posts = ''
@@ -996,12 +1118,25 @@ def send_posts():
         #       get length of dict
         #       dict has {uuk of user that liked it : ""}
 
+        with open(user_likes_path,'r') as user_likes_records_path:
+                                    
+            user_likes_records_source = json.load(user_likes_records_path)
 
 
 
 
 
-        if local_record in likes_records_source.keys() and likes_records_source[local_record] != "0":
+
+        # GET SOME FOOD THEN FIX THE ERROR IN THE TERMINAL
+
+
+
+
+
+
+
+
+        if local_record in user_likes_records_source.keys() and user_likes_records_source[local_record] != "0":
 
             like_class = 'like-button'
             like_count_class = 'like-count-liked'
@@ -1096,11 +1231,70 @@ def orb_react():
     post_id = request.args['id']
     user_key = request.args['key']
 
+
+    user_likes_path = '/root/Orb-Chat/public/likes/' + uuk + '.json'
+
     with open('/root/Orb-Chat/orb_resources/orb_allowed_peers.json','r') as orb_allowed_peers_path:
                                 
         orb_allowed_peers = json.load(orb_allowed_peers_path)
 
     if user_key in orb_allowed_peers.keys():
+
+        # user specific like tracker 
+
+        with open(user_likes_path,'r') as likes_records_path:
+                                    
+            likes_records_source = json.load(likes_records_path)
+
+        try:
+            reaction = request.args['reaction']
+
+            if reaction[0] == '0':
+
+                if post_id in likes_records_source.keys():
+
+                    if reaction[1] == '1':
+                        # add like
+
+                        timestamp = float(time.time())
+
+                        current_like_count = int(likes_records_source[post_id][0])
+
+                        like_record = {post_id: [str(current_like_count + 1)]}
+                        likes_records_source.update(like_record)
+
+                        with open(user_likes_path, 'w') as likes_records_path:
+
+                            json.dump(likes_records_source, likes_records_path)
+
+                    else:
+                        # remove like
+                        timestamp = float(time.time())
+
+                        current_like_count = int(likes_records_source[post_id][0])
+
+                        like_record = {post_id: [str(current_like_count - 1)]}
+                        likes_records_source.update(like_record)
+
+                        with open(user_likes_path, 'w') as likes_records_path:
+
+                            json.dump(likes_records_source, likes_records_path)
+
+                else:
+
+                    like_record = {post_id: ['1']}
+                    likes_records_source.update(like_record)
+
+                    with open(user_likes_path, 'w') as likes_records_path:
+
+                        json.dump(likes_records_source, likes_records_path)
+
+        except:
+
+            return {"message":"failure"}
+
+
+        # global like tracker (this is split out from user likes for no good reason other than maybe I will want isolated like action behaviors, probably will end up condensing this and above block though)
 
         with open('/root/Orb-Chat/public/feeds/orb_likes.json','r') as likes_records_path:
                                     

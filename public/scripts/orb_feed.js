@@ -762,7 +762,12 @@ function db_action() {
 
                     } catch {
 
-                        alert("SOMEBODY FUKCED UP");
+
+                        try {
+                            alert("SOMEBODY FUKCED UP");
+                        } catch {
+                            console.log("error alerting");
+                        }
 
                     }
 
@@ -823,7 +828,11 @@ function db_action() {
 
                     } catch {
 
-                        alert("SOMEBODY FUKCED UP");
+                        try {
+                            alert("SOMEBODY FUKCED UP");
+                        } catch {
+                            console.log("error alerting");
+                        }
                         // means that either a media post failed or the summary post failed
 
                     }
@@ -950,7 +959,11 @@ function reaction(action, object) {
 
                 } catch {
 
-                    alert("SOMEBODY FUKCED UP");
+                    try {
+                        alert("SOMEBODY FUKCED UP");
+                    } catch {
+                        console.log("error alerting");
+                    }
                     // means the reaction request failed
 
                 }
@@ -1004,7 +1017,11 @@ function reaction(action, object) {
 
                     } catch {
 
-                        alert("SOMEBODY FUKCED UP");
+                        try {
+                            alert("SOMEBODY FUKCED UP");
+                        } catch {
+                            console.log("error alerting");
+                        }
                         // means the reaction request failed
 
                     }
@@ -1050,7 +1067,11 @@ function reaction(action, object) {
 
                     } catch {
 
-                        alert("SOMEBODY FUKCED UP");
+                        try {
+                            alert("SOMEBODY FUKCED UP");
+                        } catch {
+                            console.log("error alerting");
+                        }
                         // means the reaction request failed
 
                     }
@@ -1645,7 +1666,12 @@ try {
 
 } catch (e) {
 
-    alert(e);
+    try {
+        alert(e);
+    } catch {
+        console.log("error alerting");
+    }
+    
     window.location.href = "/login";
 
 }

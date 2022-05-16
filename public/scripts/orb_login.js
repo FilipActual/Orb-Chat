@@ -139,6 +139,7 @@ var screenname_input = document.getElementById("login-input-username");
 function send_login() {
     
     login_button.className = "login-button-waiting";
+    login_button.innerHTML = "<b>Loading..</b>";
     var hash_pass = CryptoJS.MD5(hash_key_input.value).toString();
 
     setCookie("username", screenname_input.value);
