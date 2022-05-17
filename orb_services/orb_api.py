@@ -606,9 +606,9 @@ def orb_reg():
 
     if uuk in orb_allowed_peers.keys():
 
-        if orb_allowed_peers[uuk][0] == user_key:
+        if orb_allowed_peers[uuk][0] == uuk + user_key:
 
-            del orb_allowed_peers[user_key]
+            del orb_allowed_peers[uuk]
 
             with open('/root/Orb-Chat/orb_resources/orb_access_keys.json','w') as orb_access_keys_path:
 
@@ -618,9 +618,9 @@ def orb_reg():
                                 
                 orb_users = json.load(orb_users_path)
 
-            if user_id in orb_users.keys():
+            if uuk + user_key in orb_users.keys():
 
-                del orb_users[uuk]
+                del orb_users[uuk + user_key]
 
             with open('/root/Orb-Chat/orb_resources/orb_users.json','w') as orb_users_path:
                                 
@@ -632,7 +632,7 @@ def orb_reg():
 
         # add new user
 
-        orb_allowed_peers[uuk] = [user_key]
+        orb_allowed_peers[uuk] = [uuk + user_key]
 
         with open('/root/Orb-Chat/orb_resources/orb_allowed_peers.json','w') as orb_allowed_peers_path:
                             
@@ -642,7 +642,7 @@ def orb_reg():
                             
             orb_users = json.load(orb_users_path)
 
-        orb_users[uuk] = [user_id, user_dn, user_image]
+        orb_users[uuk + user_key] = [user_id, user_dn, user_image]
 
         with open('/root/Orb-Chat/orb_resources/orb_users.json','w') as orb_users_path:
                             
@@ -742,7 +742,7 @@ def get_code():
 
     if uuk in orb_allowed_peers.keys():
 
-        if orb_allowed_peers[uuk][0] == user_key:
+        if orb_allowed_peers[uuk][0] == uuk + user_key:
 
             mnemo = mnemonic.Mnemonic("english")
 
@@ -916,7 +916,7 @@ def send_posts():
 
     if unique_user_key in orb_allowed_peers.keys():
 
-        if orb_allowed_peers[unique_user_key][0] == user_key:
+        if orb_allowed_peers[unique_user_key][0] == unique_user_key + user_key:
 
             posts = ''
 
@@ -985,7 +985,7 @@ def send_posts():
                                     
                 orb_users = json.load(orb_users_path)
 
-            post_user_record = orb_users[uuk]
+            post_user_record = orb_users[uuk + user_key]
 
             profile_image = url_for('static', filename='media/' + post_user_record[2] + '') # = profile image of screenname from post, found in orb_users.json
 
@@ -1130,7 +1130,7 @@ def orb_react():
 
     if uuk in orb_allowed_peers.keys():
 
-        if orb_allowed_peers[uuk][0] == user_key:
+        if orb_allowed_peers[uuk][0] == uuk + user_key:
 
             # user specific like tracker 
 
@@ -1315,7 +1315,7 @@ def orb_post():
 
     if uuk in orb_allowed_peers.keys():
 
-        if orb_allowed_peers[uuk][0] == user_key:
+        if orb_allowed_peers[uuk][0] == uuk + user_key:
 
             #   POSTS THAT CONTAIN MEDIA
 
@@ -1477,7 +1477,7 @@ def upload_media():
 
     if uuk in orb_allowed_peers.keys():
 
-        if orb_allowed_peers[uuk][0] == user_key:
+        if orb_allowed_peers[uuk][0] == uuk + user_key:
 
             file_name = secure_filename(request.args['filename'])
 

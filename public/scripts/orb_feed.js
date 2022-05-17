@@ -1061,6 +1061,8 @@ function get_posts(id, count) {
     }
 
     var loading_icon = document.getElementById("loading-icon");
+    loading_icon.className = "loading-icon";
+
     post_counter++;
     
     $.ajax({
@@ -1521,7 +1523,7 @@ try {
     if (usr == -1 || hash == -1 || usr == null || hash == null) {
         
         console.log("no cookie set");
-        throw 'auth expired';
+        throw 'You are not logged in, you will be taken to the login page.';
 
     }
 
