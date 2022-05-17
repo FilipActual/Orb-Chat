@@ -88,16 +88,17 @@ p_field.addEventListener('keypress', function(e) {
 
 pc_field.addEventListener('keypress', function(e) {
 
-    if (e.which == 13 || e.keyCode == 13) {
+    pass_refresh(pc_field);
+    // if (e.which == 13 || e.keyCode == 13) {
 
-        e.preventDefault();
-        send_join();
+    //     e.preventDefault();
+    //     send_join();
 
-    } else {
+    // } else {
 
-        pass_refresh(pc_field);
+    //     pass_refresh(pc_field);
 
-    }
+    // }
 
 });
 
@@ -283,7 +284,7 @@ function send_join() {
     join_button.className = "join-button-loading";
     join_button.innerHTML = "<b>Loading..</b>";
 
-    if (avi_container.src == "" || screenname_input.value == "" || display_name_input.value == "" || display_name_input.value.length > 15 || display_name_input.value.length > 32) {
+    if (avi_container.src === "" || screenname_input.value === "" || display_name_input.value === "") {
 
         try {
             window.alert("Please fill out all fields according to the criteria and provide a profile image.");
@@ -295,7 +296,7 @@ function send_join() {
     }
 
     // if passwords match
-    if (hash_key_input.value == hash_key_conf.value && hash_key_input.value !== "" && hash_key_input.value.length >= 8 && hash_key_input.value.length <= 32) {
+    if (hash_key_input.value == hash_key_conf.value && hash_key_input.value !== "") {
 
 
         // check if username already taken 
@@ -312,7 +313,7 @@ function send_join() {
                 
                 console.log(data['message']);
                 // if user avi  upload was success, redirect user to feed
-                if (data['message'] == "available") {
+                if (data['message'] === "available") {
             
                     var user_sn = screenname_input.value;
                     var user_dn = display_name_input.value;
@@ -341,6 +342,68 @@ function send_join() {
                                 if (data['message'] == "success") {
             
                                     console.log("media success");
+
+                                    for (var i = 0; i < selectedFiles.length; i++) {
+            
+                                        var new_filename_title = md5_files[i];
+                                        var new_filename_extension = selectedFiles[i].name.substring(selectedFiles[i].name.length - 5).split('.').pop();
+                                        var new_filename = new_filename_title.concat('.', new_filename_extension);
+                                        var form_data = new FormData();
+                            
+                                        form_data.append('file', selectedFiles[i], new_filename);
+                            
+                                        try {
+                            
+                                            console.log(join_key_string);
+                            
+                                            
+                                            
+                                            // submit the user registration
+                                            $.ajax({
+                            
+                                                type: 'GET',
+                                                url: "/reg?uuk=" + unique_user_key + "&sn=" + encodeURIComponent(readCookie("username")) + '&dn=' + encodeURIComponent(user_dn) + "&key=" + encodeURIComponent(readCookie("hashpass")) + "&img=" + encodeURIComponent(new_filename) + "&joinkey=" + encodeURIComponent(join_key_string) + "",
+                                                timeout: 60000,
+                                                contentType: false,
+                                                cache: false,
+                                                processData: false,
+                                                success: function(data) {
+                            
+                                                    console.log(data['message']);
+                                                    // if user registration returns successful, submit user avi media upload
+                                                    if (data['message'] == "success") {
+                            
+                                                        console.log("reg success");
+                                                        finish_reg(new_filename, form_data);
+                            
+                                                    } else {
+                            
+                                                        // user registration failed
+                                                        try {
+                                                            window.alert("Username taken");
+                                                        } catch {
+                                                            console.log("error alerting");
+                                                        }
+                            
+                                                    }
+                                                    
+                                                }
+                            
+                                            });
+                            
+                                        } catch (e) {
+                
+                                            try {
+                                                window.alert(e + ': try refreshing the page');
+                                            } catch {
+                                                console.log("error alerting");
+                                            }
+                                            // user registration failed, try refreshing
+                            
+                                        }
+                            
+                                    }
+
                                     window.location.href = "/feed";
                                     return null
             
@@ -356,68 +419,12 @@ function send_join() {
                         });
                     }
             
-                    for (var i = 0; i < selectedFiles.length; i++) {
-            
-                        var new_filename_title = md5_files[i];
-                        var new_filename_extension = selectedFiles[i].name.substring(selectedFiles[i].name.length - 5).split('.').pop();
-                        var new_filename = new_filename_title.concat('.', new_filename_extension);
-                        var form_data = new FormData();
-            
-                        form_data.append('file', selectedFiles[i], new_filename);
-            
-                        try {
-            
-                            console.log(join_key_string);
-            
-                            
-                            
-                            // submit the user registration
-                            $.ajax({
-            
-                                type: 'GET',
-                                url: "/reg?uuk=" + unique_user_key + "&sn=" + encodeURIComponent(readCookie("username")) + '&dn=' + encodeURIComponent(user_dn) + "&key=" + encodeURIComponent(readCookie("hashpass")) + "&img=" + encodeURIComponent(new_filename) + "&joinkey=" + encodeURIComponent(join_key_string) + "",
-                                timeout: 60000,
-                                contentType: false,
-                                cache: false,
-                                processData: false,
-                                success: function(data) {
-            
-                                    console.log(data['message']);
-                                    // if user registration returns successful, submit user avi media upload
-                                    if (data['message'] == "success") {
-            
-                                        console.log("reg success");
-                                        finish_reg(new_filename, form_data);
-            
-                                    } else {
-            
-                                        // user registration failed
-                                        try {
-                                            window.alert("An unknown error occurred, please refresh the page.");
-                                        } catch {
-                                            console.log("error alerting");
-                                        }
-            
-                                    }
-                                    
-                                }
-            
-                            });
-            
-                        } catch (e) {
-
-                            try {
-                                window.alert(e + ': try refreshing the page');
-                            } catch {
-                                console.log("error alerting");
-                            }
-                            // user registration failed, try refreshing
-            
-                        }
-            
-                    }
+                    finish_reg();
 
                 } else {
+
+                    join_button.className = "join-button";
+                    join_button.innerHTML = "<b>Join</b>";
 
                     try {
                         window.alert("Username is already taken. Please try another.");

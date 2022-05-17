@@ -503,13 +503,20 @@ def orb_check_sn():
                                 
             orb_screennames = json.load(orb_screennames_path)
 
-        if user_id in orb_screennames.keys():
+            application.logger.info(user_id)
+            print(user_id)
+            
+            if user_id in orb_screennames.keys():
 
-            return {"message": "fail"}
+                return {"message": "fail"}
 
-        else:
+            else:
 
-            return {"message": "available"}
+                return {"message": "available"}
+
+    else:
+
+        return {"message": "not authorized"}
 
 #
 
