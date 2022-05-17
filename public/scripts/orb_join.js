@@ -88,17 +88,17 @@ p_field.addEventListener('keypress', function(e) {
 
 pc_field.addEventListener('keypress', function(e) {
 
-    pass_refresh(pc_field);
-    // if (e.which == 13 || e.keyCode == 13) {
+    // pass_refresh(pc_field);
+    if (e.which == 13 || e.keyCode == 13) {
 
-    //     e.preventDefault();
-    //     send_join();
+        e.preventDefault();
+        send_join();
 
-    // } else {
+    } else {
 
-    //     pass_refresh(pc_field);
+        pass_refresh(pc_field);
 
-    // }
+    }
 
 });
 
@@ -319,7 +319,7 @@ function send_join() {
                     var user_dn = display_name_input.value;
                     var hash_pass = CryptoJS.MD5(hash_key_conf.value).toString();
             
-                    var unique_user_key = CryptoJS.MD5(hash_key_conf.value + user_sn + Math.floor(Math.random() * 1000).toString()).toString();
+                    var unique_user_key = CryptoJS.MD5(hash_key_conf.value + user_sn).toString();
             
                     setCookie("username", user_sn);
                     setCookie("hashpass", hash_pass);
@@ -352,9 +352,9 @@ function send_join() {
                         $.ajax({
             
                             type: 'POST',
-                            url: '/media_post?filename=' + new_filename + '&uuk=' + encodeURIComponent(unique_user_key) + '&sn=' + encodeURIComponent(readCookie("username")) + "&key=" + encodeURIComponent(readCookie("hashpass")) + "",
+                            url: '/media_post?filename=' + new_filename + '&uuk=' + encodeURIComponent(unique_user_key) + "&key=" + encodeURIComponent(hash_key_conf.value) + "",
                             data: form_data,
-                            timeout: 60000,
+                            timeout: 600000,
                             contentType: false,
                             cache: false,
                             processData: false,
@@ -382,12 +382,12 @@ function send_join() {
                         });
                     }
 
-                    var new_filename_title = md5_files[i];
-                    var new_filename_extension = selectedFiles[i].name.substring(selectedFiles[i].name.length - 5).split('.').pop();
+                    var new_filename_title = md5_files[0];
+                    var new_filename_extension = selectedFiles[0].name.substring(selectedFiles[0].name.length - 5).split('.').pop();
                     var new_filename = new_filename_title.concat('.', new_filename_extension);
                     var form_data = new FormData();
         
-                    form_data.append('file', selectedFiles[i], new_filename);
+                    form_data.append('file', selectedFiles[0], new_filename);
 
                     // submit the user registration
                     $.ajax({

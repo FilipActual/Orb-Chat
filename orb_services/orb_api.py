@@ -193,14 +193,16 @@ def bip39(mnemonic_words):
 @application.route('/', methods=['GET'])
 def orb_main():
 
-    with open('/root/Orb-Chat/public/pages/orb_main.html', 'r') as ui_code_source:
-        ui_code = ui_code_source.read()
+    # with open('/root/Orb-Chat/public/pages/orb_main.html', 'r') as ui_code_source:
+    #     ui_code = ui_code_source.read()
 
-    style = url_for('static', filename='styles/orb_main.css')
-    script = url_for('static', filename='scripts/orb_main.js')
-    # orb = url_for('static', filename='media/orb.png')
+    # style = url_for('static', filename='styles/orb_main.css')
+    # script = url_for('static', filename='scripts/orb_main.js')
+    # # orb = url_for('static', filename='media/orb.png')
 
-    return ui_code.format(style, script) # pull connection info separately
+    # return ui_code.format(style, script) # pull connection info separately
+
+    return redirect('/feed')
         
 
             # not first setup
@@ -588,24 +590,23 @@ def orb_reg():
                                 
         orb_access_keys = json.load(orb_access_keys_path)
 
-    if join_key in orb_access_keys.keys():
+    del orb_access_keys[join_key]
 
-        del orb_access_keys[join_key]
+    with open('/root/Orb-Chat/orb_resources/orb_access_keys.json','w') as orb_access_keys_path:
 
-        with open('/root/Orb-Chat/orb_resources/orb_access_keys.json','w') as orb_access_keys_path:
+        json.dump(orb_access_keys, orb_access_keys_path)
 
-            json.dump(orb_access_keys, orb_access_keys_path)
+    
 
-        
+    with open('/root/Orb-Chat/orb_resources/orb_allowed_peers.json','r') as orb_allowed_peers_path:
+                            
+        orb_allowed_peers = json.load(orb_allowed_peers_path)
 
-        with open('/root/Orb-Chat/orb_resources/orb_allowed_peers.json','r') as orb_allowed_peers_path:
-                                
-            orb_allowed_peers = json.load(orb_allowed_peers_path)
+    # DELETE A USER
 
+    if uuk in orb_allowed_peers.keys():
 
-        # DELETE A USER
-
-        if user_key in orb_allowed_peers.keys():
+        if orb_allowed_peers[uuk] = user_key:
 
             del orb_allowed_peers[user_key]
 
@@ -627,92 +628,56 @@ def orb_reg():
             
             return {"message": "success"}
 
+    else:
+
+        # add new user
+
+        orb_allowed_peers[uuk] = []
+
+        with open('/root/Orb-Chat/orb_resources/orb_allowed_peers.json','w') as orb_allowed_peers_path:
+                            
+            json.dump(orb_allowed_peers, orb_allowed_peers_path)
+
+        with open('/root/Orb-Chat/orb_resources/orb_users.json','r') as orb_users_path:
+                            
+            orb_users = json.load(orb_users_path)
+
+        orb_users[uuk] = [user_id, user_dn, user_image]
+
+        with open('/root/Orb-Chat/orb_resources/orb_users.json','w') as orb_users_path:
+                            
+            json.dump(orb_users, orb_users_path)
+
+        with open('/root/Orb-Chat/orb_resources/orb_screennames.json','r') as orb_screennames_path:
+                            
+            orb_screennames = json.load(orb_screennames_path)
+
+        if user_id in orb_screennames.keys():
+
+            return {"message": "fail"} # should never get here, but ya know
+
         else:
 
-            # add new user
+            orb_screennames[user_id] = []
 
-            orb_allowed_peers[user_key] = [uuk]
-
-            with open('/root/Orb-Chat/orb_resources/orb_allowed_peers.json','w') as orb_allowed_peers_path:
+            with open('/root/Orb-Chat/orb_resources/orb_screennames.json','w') as orb_screennames_path:
                                 
-                json.dump(orb_allowed_peers, orb_allowed_peers_path)
+                json.dump(orb_screennames, orb_screennames_path)
 
-            with open('/root/Orb-Chat/orb_resources/orb_users.json','r') as orb_users_path:
-                                
-                orb_users = json.load(orb_users_path)
+        if os.path.exists(user_likes_path):
 
-            orb_users[uuk] = [user_id, user_dn, user_image]
+            pass
+        
+        else:
 
-            with open('/root/Orb-Chat/orb_resources/orb_users.json','w') as orb_users_path:
-                                
-                json.dump(orb_users, orb_users_path)
-
-            with open('/root/Orb-Chat/orb_resources/orb_screennames.json','r') as orb_screennames_path:
-                                
-                orb_screennames = json.load(orb_screennames_path)
-
-            if user_id in orb_screennames.keys():
-
-                return {"message": "fail"}
-
-            else:
-
-                orb_screennames[user_id] = []
-
-                with open('/root/Orb-Chat/orb_resources/orb_screennames.json','w') as orb_screennames_path:
-                                    
-                    json.dump(orb_screennames, orb_screennames_path)
-
-
-            if os.path.exists(user_likes_path):
-
+            with open(user_likes_path, 'w'):
                 pass
-            
-            else:
 
-                with open(user_likes_path, 'w'):
-                    pass
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            return {"message": "success"}
+        return {"message": "success"}
 
     else:
 
         return {"message":"not authorized"}
-    #
-
-    # REQUEST FIELDS
-
-    #
-
-    #
-
-    # parameters available:
-    # user id
- 
-    # user password hash
-
-    # user image name
-
-    # join key code
-
-    #
-
-    # if keycode checks out, add user. user id and hashed password will now have access to /feed and /media
-
 
 #
 
@@ -772,147 +737,63 @@ def orb_reg():
 @application.route('/getcode', methods=['GET'])
 def get_code():
 #ex
-    # uuk = request.args['uuk']
+    uuk = request.args['uuk']
     user_key = request.args['key']
 
     with open('/root/Orb-Chat/orb_resources/orb_allowed_peers.json','r') as orb_allowed_peers_path:
                                 
         orb_allowed_peers = json.load(orb_allowed_peers_path)
 
-    if user_key in orb_allowed_peers.keys():
+    if uuk in orb_allowed_peers.keys():
 
-        mnemo = mnemonic.Mnemonic("english")
+        if orb_allowed_peers[uuk] = user_key:
 
-        mnemonic_words = mnemo.generate(strength=256)
-        # mnemonic_words = "roof invite maid gown frown subway fluid feel pizza flat kit patch gaze course month north jar genuine miss enjoy nest damp aspect solid"
+            mnemo = mnemonic.Mnemonic("english")
 
-        seed = mnemo.to_seed(mnemonic_words, passphrase=user_key)
+            mnemonic_words = mnemo.generate(strength=256)
+            # mnemonic_words = "roof invite maid gown frown subway fluid feel pizza flat kit patch gaze course month north jar genuine miss enjoy nest damp aspect solid"
 
-        entropy = mnemo.to_entropy(mnemonic_words)
+            seed = mnemo.to_seed(mnemonic_words, passphrase=user_key)
 
-        key = bip39(mnemonic_words)
+            entropy = mnemo.to_entropy(mnemonic_words)
 
-        # add_key to orb_access_keys
-        with open('/root/Orb-Chat/orb_resources/orb_access_keys.json','r') as orb_access_keys_path:
-                                    
-            orb_access_keys = json.load(orb_access_keys_path)
+            key = bip39(mnemonic_words)
 
-        orb_access_keys.update({key: []})
+            # add_key to orb_access_keys
+            with open('/root/Orb-Chat/orb_resources/orb_access_keys.json','r') as orb_access_keys_path:
+                                        
+                orb_access_keys = json.load(orb_access_keys_path)
 
-        with open('/root/Orb-Chat/orb_resources/orb_access_keys.json','w') as orb_access_keys_path:
+            orb_access_keys.update({key: []})
 
-            json.dump(orb_access_keys, orb_access_keys_path)
+            with open('/root/Orb-Chat/orb_resources/orb_access_keys.json','w') as orb_access_keys_path:
 
-        orb_information_path = os.path.expanduser('/root/Orb-Chat/orb_resources/orb_information.json')
+                json.dump(orb_access_keys, orb_access_keys_path)
 
-        orb_address = ''
+            orb_information_path = os.path.expanduser('/root/Orb-Chat/orb_resources/orb_information.json')
 
-        with open(orb_information_path, 'r') as orb_information:
-            orb_info = json.load(orb_information)
+            orb_address = ''
 
-            for orb_entity in orb_info.keys():
-                orb_address = orb_entity
+            with open(orb_information_path, 'r') as orb_information:
+                orb_info = json.load(orb_information)
 
-        connection_info = orb_address + '/join?key=' + key
+                for orb_entity in orb_info.keys():
+                    orb_address = orb_entity
 
-        return {"join":connection_info}
-    
-    else:
+            connection_info = orb_address + '/join?key=' + key
+
+            return {"join":connection_info}
         
+        else:
+            
+            # redirect to invalid join key page
+
+            return {"join":"not authorized"}
+    else:
+            
         # redirect to invalid join key page
 
         return {"join":"not authorized"}
-    #
-
-    # REQUEST FIELDS
-
-    #
-
-    #
-
-
-    # input user id
-        # get user input as string, store in cookie, send in request
-
-    # input user password
-        # get user input, md5 it, store in cookie, send in request
-
-    # input user image
-        # get user input as image, send to media directory, send in request
-
-    # input join key code
-        # get user input as string, send in request
-
-    #
-
-    # if keycode checks out
-
-    # get user input as string, store in cookie
-    # get user input, md5 it, store in cookie
-            
-    # REDIRECT to /feed with id and hashpass from cookie
-
-#
-
-#
-
-#
-
-#
-
-#
-
-#
-
-#
-
-#
-
-#
-
-#
-
-#
-
-#
-
-#
-
-#
-
-#
-
-#
-
-# 888     888 888     888 888    d8P  
-# 888     888 888     888 888   d8P   
-# 888     888 888     888 888  d8P    
-# 888     888 888     888 888d88K     
-# 888     888 888     888 8888888b    
-# 888     888 888     888 888  Y88b   
-# Y88b. .d88P Y88b. .d88P 888   Y88b  
-#  "Y88888P"   "Y88888P"  888    Y88b 
-
-# FEED
-
-@application.route('/uuk', methods=['GET'])
-def orb_uuk():
-
-    # user_id = request.args['sn']
-    user_key = request.args['key']
-
-    with open('/root/Orb-Chat/orb_resources/orb_allowed_peers.json','r') as orb_allowed_peers_path:
-                                
-        orb_allowed_peers = json.load(orb_allowed_peers_path)
-
-    if user_key in orb_allowed_peers.keys():
-
-        # orb_allowed_peers[user_key] = [uuk, user_id, user_image]
-        uuk = orb_allowed_peers[user_key][0]
-
-        return {'uuk': uuk}
-
-
 
 #
 
@@ -1037,104 +918,106 @@ def send_posts():
     unique_user_key = orb_allowed_peers[user_key][0]
     user_likes_path = '/root/Orb-Chat/public/likes/' + unique_user_key + '.json'
 
-    if user_key in orb_allowed_peers.keys():
+    if uuk in orb_allowed_peers.keys():
 
-        posts = ''
+        if orb_allowed_peers[uuk] = user_key:
 
-        with open('/root/Orb-Chat/public/feeds/orb_likes.json','r') as likes_records_path:
+            posts = ''
+
+            with open('/root/Orb-Chat/public/feeds/orb_likes.json','r') as likes_records_path:
+                                    
+                likes_records_source = json.load(likes_records_path)
+
+            with open('/root/Orb-Chat/public/feeds/orb_feed.json','r') as local_records_path:
                                 
-            likes_records_source = json.load(likes_records_path)
+                updated_local_records_source = json.load(local_records_path)
+                # "postid": [time created, text_content, file_actions, uuk]
 
-        with open('/root/Orb-Chat/public/feeds/orb_feed.json','r') as local_records_path:
-                            
-            updated_local_records_source = json.load(local_records_path)
-            # "postid": [time created, text_content, file_actions, uuk]
+            with open('/root/Orb-Chat/public/feeds/orb_feed.json','r') as local_records_path:
+                                
+                updated_local_records_source = json.load(local_records_path)
 
-        with open('/root/Orb-Chat/public/feeds/orb_feed.json','r') as local_records_path:
-                            
-            updated_local_records_source = json.load(local_records_path)
+                if len(updated_local_records_source) < 1:
 
-            if len(updated_local_records_source) < 1:
+                    return {'content':'', 'cid':'-1', 'nid':'-1'}
 
-                return {'content':'', 'cid':'-1', 'nid':'-1'}
+            # for local_record in updated_local_records_source: # up to a certain threshold per request? # 
 
-        # for local_record in updated_local_records_source: # up to a certain threshold per request? # 
+            keys_list = list(updated_local_records_source)
 
-        keys_list = list(updated_local_records_source)
+            if post_id == "-1": #start new post request stream
 
-        if post_id == "-1": #start new post request stream
+                try:
 
-            try:
+                    # get the first post
+                    local_record = keys_list[0]
+                    current_id = local_record
 
-                # get the first post
-                local_record = keys_list[0]
+                except:
+
+                    # there are no posts
+                    return {'content':'', 'cid':'', 'nid':'-1'}
+
+                try:
+
+                    #get the next post
+                    next_id = keys_list[1]
+
+                except:
+
+                    # no more posts after this one
+                    next_id = "0"
+
+            else: # next post id has been supplied
+
+                local_record = post_id
                 current_id = local_record
 
-            except:
+                try:
 
-                # there are no posts
-                return {'content':'', 'cid':'', 'nid':'-1'}
+                    #get the next post
+                    next_id = keys_list[keys_list.index(local_record) + 1]
+                except:
 
-            try:
-
-                #get the next post
-                next_id = keys_list[1]
-
-            except:
-
-                # no more posts after this one
-                next_id = "0"
-
-        else: # next post id has been supplied
-
-            local_record = post_id
-            current_id = local_record
-
-            try:
-
-                #get the next post
-                next_id = keys_list[keys_list.index(local_record) + 1]
-            except:
-
-                # no more posts after this one
-                next_id = "0"
+                    # no more posts after this one
+                    next_id = "0"
 
 
-        uuk = updated_local_records_source[local_record][3]
+            uuk = updated_local_records_source[local_record][3]
 
-        with open('/root/Orb-Chat/orb_resources/orb_users.json','r') as orb_users_path:
-                                
-            orb_users = json.load(orb_users_path)
-
-        post_user_record = orb_users[uuk]
-
-        profile_image = url_for('static', filename='media/' + post_user_record[2] + '') # = profile image of screenname from post, found in orb_users.json
-
-        profile_name = post_user_record[1]
-
-        profile_handle = post_user_record[0]
-
-
-
-
-
-
-        # likes_path = '/root/Orb-Chat/public/activity/post_likes/' + local_record + '.json'
-        # if os.path.exists(likes_path):
-        #   with open(likes_path, 'r') as likes_path_record:
-        #       get length of dict
-        #       dict has {uuk of user that liked it : ""}
-
-        with open(user_likes_path,'r') as user_likes_records_path:
+            with open('/root/Orb-Chat/orb_resources/orb_users.json','r') as orb_users_path:
                                     
-            user_likes_records_source = json.load(user_likes_records_path)
+                orb_users = json.load(orb_users_path)
+
+            post_user_record = orb_users[uuk]
+
+            profile_image = url_for('static', filename='media/' + post_user_record[2] + '') # = profile image of screenname from post, found in orb_users.json
+
+            profile_name = post_user_record[1]
+
+            profile_handle = post_user_record[0]
 
 
 
 
 
 
-        # GET SOME FOOD THEN FIX THE ERROR IN THE TERMINAL
+            # likes_path = '/root/Orb-Chat/public/activity/post_likes/' + local_record + '.json'
+            # if os.path.exists(likes_path):
+            #   with open(likes_path, 'r') as likes_path_record:
+            #       get length of dict
+            #       dict has {uuk of user that liked it : ""}
+
+            with open(user_likes_path,'r') as user_likes_records_path:
+                                        
+                user_likes_records_source = json.load(user_likes_records_path)
+
+
+
+
+
+
+            # GET SOME FOOD THEN FIX THE ERROR IN THE TERMINAL
 
 
 
@@ -1143,58 +1026,62 @@ def send_posts():
 
 
 
-        if local_record in user_likes_records_source.keys() and user_likes_records_source[local_record] != "0":
+            if local_record in user_likes_records_source.keys() and user_likes_records_source[local_record] != "0":
 
-            like_class = 'like-button'
-            like_count_class = 'like-count-liked'
-            like_button_src = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAAFP0lEQVRogdXaZ4hcVRTA8V+G1WjEFgsGNagYgyVYo4klxm7sisau2MACoqASNSiWiAWx4AcbiVgRFSwoK0pib7GAYIkasSaxGwsaW/xw3svcec7MTnm7bv6w7D1nztx7zy3v3XPuDNn6lsVaYDXsgrFYH8vhR7yHmXi1lUqasCV2w6ZZW3/iE7yR1b+grwp6+vh8FC7GQVihid17uAYz+mqwwGRMEY404g88gUvxViOjSpMKpuIDHK25E7AxpmMW1uzDlpjRh3G/5k7AsmIg38RVjYyGNFha94vRSvlNTPU8LMJKYsY2Kdh9LZbhuw3aXAvPY8OC/kPMwQ9YBiOwOVYp2D2N/bI+LKHe0nosM8z5Btfj9qyTRfYQy2PXTF4Ts8UsfVawXRGvY+1E9yquFDNUZGUcj7OxXqbbHc9gfGpYXFqXF5zoxWhc0cAJeEps1HMS3TAx6kVmFZy4FOMaOAELcWPWh/sS/TixlJeQOrINLkzkOzBJTHUrXIvDEnkkbk3kqdg6kU8XD5JW+ANH4bpEdwL2z4V0j8zBRln5LWzVYiNFzio0OFwMRroZr8F5Hdbfi72y8vficb1kRiaqOgH7dtgIsZ9eSuSb1c7MRzp3Ag7Er1l5OI6k6siUxPA6zO+iITgiKU/GKYl8VJd1L8JFiXw+sbSG47vkgxFaeJO2wG04uaDrFfuuW4aKB8HQTN6ogr0TgxeU4wRcUkd3YR1dJyzCI4l8UAUTEsUjyuMLtWewT8XbuSzSvo6vYINE8XKJDcEtSXl6Q6vOeD0pj+zBuoniy5Ibu1O8W4aJ90yZLBDHpuWxRo/qIe83sYHK5G/sU3KdOT8JZ9bHihVxQIO/sr+lid+z/z2VRBiq+jhbGhgiTuDwZwVfZcKy4rS5tDBcdVv8VBEhZc7oAe9O54xU3RbzK+KwmDPhv/aDlh2T8scVPJkoDhngznRDGsHOrIhg55dMMUrfMfRgYB21M/JwRTxy0+hrisHP2Um5F9/ngdVovJ98OErEDYORVcRpPQ9BJuD5XJiD5xLjuweuX20zQ9WJD2S5gTRmPz0pb4fDB6ZfbbGHyHHlnJYXUkfeEcFQzr1YvV+71R49It+W0yvSqfhvOuhUkdPNP5tp8NCLVbPy37JYPafoyD84OJHHiMTc/83lIneWc6zqgKN+7vcZTEvkk3BuyR1rh2PUhsgz1L4u0DiJPVXkWHOuFqMw0OyFuxJ5Nk6sZ9gsG7+neLzl3Kn/gqR6jBX7IudbkfetSzNHFmMHtWvxcbVHg/5ic7xY6Mv2IiqsSzNHiFHYUdwg5TyLnTrsYCtsIjKVyyS6XcS1Q0P6coR4v4wrfOe5rPKyGSPuYIYlukli8JrSiiNEPmrngm6myBmXxWYiD7ZcojtM7T5pSKuOUH8WZiknBbqtyFMtn+gOxYOtVtCOI8Q7ZmJB94TknqIDxuMVtYmPA/BQO5W06wjVzZ7edzwqRrBddhcbe0iiO1hc/7VFJ44Qye5xai8kHxC3SK1ygLi2S5mk8TVcUzp1BF4TazvNTk7HGS18d7LaJPRicZna0sauRzeOwNsidvkx0d2EM5t850i1x/H8xTurm4506wgRXW6j9pbrBlxQx/YUEefk/CIGoutbgDIcgbnixvbzRDcNlyXymWrvEn8WF66zy+hAX79FaYf5omMvieQFcYr+TpyRbkhsvxWP3dISHI1+wtENK4sD36YNPp8nDoCfltloWUsrZaHGS2YutlCyE/SPI8QvFbYVj+icuSKL+U1/NFjmHqnHdrhHnKGOU03Nls6/kn8H2GYDuI4AAAAASUVORK5CYII="
+                like_class = 'like-button'
+                like_count_class = 'like-count-liked'
+                like_button_src = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAAFP0lEQVRogdXaZ4hcVRTA8V+G1WjEFgsGNagYgyVYo4klxm7sisau2MACoqASNSiWiAWx4AcbiVgRFSwoK0pib7GAYIkasSaxGwsaW/xw3svcec7MTnm7bv6w7D1nztx7zy3v3XPuDNn6lsVaYDXsgrFYH8vhR7yHmXi1lUqasCV2w6ZZW3/iE7yR1b+grwp6+vh8FC7GQVihid17uAYz+mqwwGRMEY404g88gUvxViOjSpMKpuIDHK25E7AxpmMW1uzDlpjRh3G/5k7AsmIg38RVjYyGNFha94vRSvlNTPU8LMJKYsY2Kdh9LZbhuw3aXAvPY8OC/kPMwQ9YBiOwOVYp2D2N/bI+LKHe0nosM8z5Btfj9qyTRfYQy2PXTF4Ts8UsfVawXRGvY+1E9yquFDNUZGUcj7OxXqbbHc9gfGpYXFqXF5zoxWhc0cAJeEps1HMS3TAx6kVmFZy4FOMaOAELcWPWh/sS/TixlJeQOrINLkzkOzBJTHUrXIvDEnkkbk3kqdg6kU8XD5JW+ANH4bpEdwL2z4V0j8zBRln5LWzVYiNFzio0OFwMRroZr8F5Hdbfi72y8vficb1kRiaqOgH7dtgIsZ9eSuSb1c7MRzp3Ag7Er1l5OI6k6siUxPA6zO+iITgiKU/GKYl8VJd1L8JFiXw+sbSG47vkgxFaeJO2wG04uaDrFfuuW4aKB8HQTN6ogr0TgxeU4wRcUkd3YR1dJyzCI4l8UAUTEsUjyuMLtWewT8XbuSzSvo6vYINE8XKJDcEtSXl6Q6vOeD0pj+zBuoniy5Ibu1O8W4aJ90yZLBDHpuWxRo/qIe83sYHK5G/sU3KdOT8JZ9bHihVxQIO/sr+lid+z/z2VRBiq+jhbGhgiTuDwZwVfZcKy4rS5tDBcdVv8VBEhZc7oAe9O54xU3RbzK+KwmDPhv/aDlh2T8scVPJkoDhngznRDGsHOrIhg55dMMUrfMfRgYB21M/JwRTxy0+hrisHP2Um5F9/ngdVovJ98OErEDYORVcRpPQ9BJuD5XJiD5xLjuweuX20zQ9WJD2S5gTRmPz0pb4fDB6ZfbbGHyHHlnJYXUkfeEcFQzr1YvV+71R49It+W0yvSqfhvOuhUkdPNP5tp8NCLVbPy37JYPafoyD84OJHHiMTc/83lIneWc6zqgKN+7vcZTEvkk3BuyR1rh2PUhsgz1L4u0DiJPVXkWHOuFqMw0OyFuxJ5Nk6sZ9gsG7+neLzl3Kn/gqR6jBX7IudbkfetSzNHFmMHtWvxcbVHg/5ic7xY6Mv2IiqsSzNHiFHYUdwg5TyLnTrsYCtsIjKVyyS6XcS1Q0P6coR4v4wrfOe5rPKyGSPuYIYlukli8JrSiiNEPmrngm6myBmXxWYiD7ZcojtM7T5pSKuOUH8WZiknBbqtyFMtn+gOxYOtVtCOI8Q7ZmJB94TknqIDxuMVtYmPA/BQO5W06wjVzZ7edzwqRrBddhcbe0iiO1hc/7VFJ44Qye5xai8kHxC3SK1ygLi2S5mk8TVcUzp1BF4TazvNTk7HGS18d7LaJPRicZna0sauRzeOwNsidvkx0d2EM5t850i1x/H8xTurm4506wgRXW6j9pbrBlxQx/YUEefk/CIGoutbgDIcgbnixvbzRDcNlyXymWrvEn8WF66zy+hAX79FaYf5omMvieQFcYr+TpyRbkhsvxWP3dISHI1+wtENK4sD36YNPp8nDoCfltloWUsrZaHGS2YutlCyE/SPI8QvFbYVj+icuSKL+U1/NFjmHqnHdrhHnKGOU03Nls6/kn8H2GYDuI4AAAAASUVORK5CYII="
 
-        else:
+            else:
 
-            like_class = 'like-button'
-            like_count_class = 'like-count'
-            like_button_src = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAAFQklEQVRogdXaeazcUxTA8U/Ha1Gx1RKCRkWJpbFUaa1Fq2qpJdROSDSWpCERKRpijSVShMSWVqwRJJaQJ6S170tCkKJiL1r7Wlv9cX4/c+fXmXnzZn7v5fWbTN69Z87ce89dzz33DZo2bZoWWAt7YgxGYCX8gPcwFy+3UkgTtsPe2Cqr6y98jNez8r/qqYCuHr4fiQtwMFZpovcersKcniosMBUzhCGN+BOP4SK82Uip0qSAmXgfx2huBGyB2ZiHdXvQJUb0QdyruREwRHTkG7iikVKjEblX9FbK72Kov8QSrCZGbMtEZzzeFtPw3QZlr4dnsWlB/gHm43sMxvrYBmskOmdjexyQtaGpIY9kijmLcA1uxTd19CeK6bFXll8Xr4pR+rSguypewwaJ7GVcLkaoyOo4AWdi40w2AU9hXKpYnFqXFIzoxua4rIER8IRYqGclsqGi14vMKxhxEcY2MAJ+xHVZG+5J5GPFVP6f1JAdcF6Svw2TxVC3wtU4PMkPx81JfiZGJ/nTxEbSCn/iaMxKZCfiwDwzKNl+52OzLP2mmIvtcEahwmGiM5YmsqvEfG+HbkzK0t+J7fr/ERmvagTs32YlxHp6IcnfqHZkPtS+EXAQfs3Sw3AUVUNmJIqzsLCDiuDIJD0VJyf5ozssewnOT/LnEIYMUx0quLLDiuAzscsV6RY7WqfcoLr9jsLICvZNFJ7TgjvQIhfWkZ1XR9YOS/BQkj+4gt0TwUPK43O1Ptgn4nQui7St4yrYJBG8WGJFcFOSnt1Qqz1eS9LDu7BRIvii5MpuF2fLUHHOlMlXwm1aGet0qTp5v4uTtEz+wX4ll5nzkzBmBFatCAcN/s4+yxN/ZH+7KklmxeyzvDBIeODwVwVfZ5khwttcXhimuix+qogrZc7m/d6c9hmuuiwWVoSzmLP7svoDll2T9EcVPJ4IDu3nxnRCeoOdWxGXnV8ywUg936EHAhuqHZEHK2LLTW9fMwx8zkzS3fgud+PTU3eqZQMDA4k1xOUt5zKq95H5eCb58s5+aVJ7zFFt9/uy2EB6Zz8tSe+EI/qnXb1ioohx5ZyaJ1JD3sEtSf5urN2nzeodXSLeltMtwqlYNhx0iojp5t/NNXDoxppZ+h/ZXT2naMi/OCTJj1L/ytrfXCJiZznHqXY4WGH06DTUhHBZBque8tvjN7WRkf7kWLXhpTm4tKjUKIg9E08m+StFL/Q3k3BHkn8VJ9VTbBaN30dsbzm367tLUj3GiHWRs1jEfevSzJCl2EXtXHxUrWvQV2yD5wtt2VncCuvSzBCiF3YVL0g5T2O3NhvYCluK9Tg4ke0pnh0a0pMhxPkytvCbZ7LCy2aUeIMZmsgmi85rSiuGEPGoPQqyuSJmXBZbizjYSonscLXrpCGtGkL9UZgneqxTdhRxqpUT2WG4v9UCemMI8VI0viB7TPJO0Qbj8JLawMcUPNCbQnprCNXFnr53PCx6sLdMEAt7UCI7RDz/9Yp2DCGC3WPVPkjeJ16RWmWKeLZLmazxM1xT2jUEXhFzO41OzsbpLfx2qtog9FLxmNrSwq5HJ4bAW+Lu8kMiux7Tm/zmKLXueH7wzuukIZ0aQtwud1D7ynUtzq2je7K45+T8Ijqi41eAMgyBBeLF9rNEdikuTvLT1b4l/iw86zJesHr8X5TesFA07AURViK86G+Fj3RtortYbLsfllV5mYYQDRwjHL6tMtmsgs6XwgH8pMyKy5paKT9qPGUWYFslG0HfGEL8p8KOYovOWSCimIv6osKyp1aRnXCX8KGOVw3Nls5/xe4BZeNvxXMAAAAASUVORK5CYII="
+                like_class = 'like-button'
+                like_count_class = 'like-count'
+                like_button_src = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAAFQklEQVRogdXaeazcUxTA8U/Ha1Gx1RKCRkWJpbFUaa1Fq2qpJdROSDSWpCERKRpijSVShMSWVqwRJJaQJ6S170tCkKJiL1r7Wlv9cX4/c+fXmXnzZn7v5fWbTN69Z87ce89dzz33DZo2bZoWWAt7YgxGYCX8gPcwFy+3UkgTtsPe2Cqr6y98jNez8r/qqYCuHr4fiQtwMFZpovcersKcniosMBUzhCGN+BOP4SK82Uip0qSAmXgfx2huBGyB2ZiHdXvQJUb0QdyruREwRHTkG7iikVKjEblX9FbK72Kov8QSrCZGbMtEZzzeFtPw3QZlr4dnsWlB/gHm43sMxvrYBmskOmdjexyQtaGpIY9kijmLcA1uxTd19CeK6bFXll8Xr4pR+rSguypewwaJ7GVcLkaoyOo4AWdi40w2AU9hXKpYnFqXFIzoxua4rIER8IRYqGclsqGi14vMKxhxEcY2MAJ+xHVZG+5J5GPFVP6f1JAdcF6Svw2TxVC3wtU4PMkPx81JfiZGJ/nTxEbSCn/iaMxKZCfiwDwzKNl+52OzLP2mmIvtcEahwmGiM5YmsqvEfG+HbkzK0t+J7fr/ERmvagTs32YlxHp6IcnfqHZkPtS+EXAQfs3Sw3AUVUNmJIqzsLCDiuDIJD0VJyf5ozssewnOT/LnEIYMUx0quLLDiuAzscsV6RY7WqfcoLr9jsLICvZNFJ7TgjvQIhfWkZ1XR9YOS/BQkj+4gt0TwUPK43O1Ptgn4nQui7St4yrYJBG8WGJFcFOSnt1Qqz1eS9LDu7BRIvii5MpuF2fLUHHOlMlXwm1aGet0qTp5v4uTtEz+wX4ll5nzkzBmBFatCAcN/s4+yxN/ZH+7KklmxeyzvDBIeODwVwVfZ5khwttcXhimuix+qogrZc7m/d6c9hmuuiwWVoSzmLP7svoDll2T9EcVPJ4IDu3nxnRCeoOdWxGXnV8ywUg936EHAhuqHZEHK2LLTW9fMwx8zkzS3fgud+PTU3eqZQMDA4k1xOUt5zKq95H5eCb58s5+aVJ7zFFt9/uy2EB6Zz8tSe+EI/qnXb1ioohx5ZyaJ1JD3sEtSf5urN2nzeodXSLeltMtwqlYNhx0iojp5t/NNXDoxppZ+h/ZXT2naMi/OCTJj1L/ytrfXCJiZznHqXY4WGH06DTUhHBZBque8tvjN7WRkf7kWLXhpTm4tKjUKIg9E08m+StFL/Q3k3BHkn8VJ9VTbBaN30dsbzm367tLUj3GiHWRs1jEfevSzJCl2EXtXHxUrWvQV2yD5wtt2VncCuvSzBCiF3YVL0g5T2O3NhvYCluK9Tg4ke0pnh0a0pMhxPkytvCbZ7LCy2aUeIMZmsgmi85rSiuGEPGoPQqyuSJmXBZbizjYSonscLXrpCGtGkL9UZgneqxTdhRxqpUT2WG4v9UCemMI8VI0viB7TPJO0Qbj8JLawMcUPNCbQnprCNXFnr53PCx6sLdMEAt7UCI7RDz/9Yp2DCGC3WPVPkjeJ16RWmWKeLZLmazxM1xT2jUEXhFzO41OzsbpLfx2qtog9FLxmNrSwq5HJ4bAW+Lu8kMiux7Tm/zmKLXueH7wzuukIZ0aQtwud1D7ynUtzq2je7K45+T8Ijqi41eAMgyBBeLF9rNEdikuTvLT1b4l/iw86zJesHr8X5TesFA07AURViK86G+Fj3RtortYbLsfllV5mYYQDRwjHL6tMtmsgs6XwgH8pMyKy5paKT9qPGUWYFslG0HfGEL8p8KOYovOWSCimIv6osKyp1aRnXCX8KGOVw3Nls5/xe4BZeNvxXMAAAAASUVORK5CYII="
 
-        try:
+            try:
 
-            current_like_count = likes_records_source[local_record][0]
+                current_like_count = likes_records_source[local_record][0]
 
-            if current_like_count == '0':
+                if current_like_count == '0':
+
+                    current_like_count = ''
+
+            except:
 
                 current_like_count = ''
-
-        except:
-
-            current_like_count = ''
-            application.logger.info('no likes')
-            
-        post_images = ""
-
-        image_count = 0
-        file_names = []
-
-        for image_file in updated_local_records_source[local_record][2].split("+"):
-
-            file_names.append(image_file)
-
-            # .format(image_url)
-        for filename in file_names:
-
-            if filename != '':
-
-                image_count += 1
-                # exec("image_" + str(image_count) + "_url = url_for('static', filename='/root/Orb-Chat/public/media/" + filename + "')")
-
-                # file_url = exec(str(image_count) + "file_item = url_for('static', filename='public/media/" + filename + ")")
-                post_images = post_images + "<img id='" + filename + "' src='" + url_for('static', filename='media/' + filename) + "' class='image-item' style='width: 100%; max-width: 1000px; float: left;'></img>"
+                application.logger.info('no likes')
                 
-        # post_string = "<div id='post-headers' class='global-east-content-container-loaded'><div class='profile-header'><img src=" + profile_image + " class='profile-image'></img><div class='name'><b>Justin Filip</b><div class='profile-bubble'><b class='handle'>@RealJustinFilip</b></div></div></div><div class='post-body'>" + updated_local_records_source[local_record][1].replace('``', '<div class="small-spacer"></div>') + "<div id='image-area' class='image-area'>{}</div></div><div id='submit-button' class='reactor'><div metadata='" + local_record + "-count' class='" + like_count_class + "'><b>432</b></div><div id='like-button' metadata='" + local_record + "' class='" + like_class + "'><b>Like</b></div><div metadata='" + local_record + "-count' class='comment-count'><b>87</b></div><div id='comment-button' metadata='" + local_record + "' class='comment-button'><b>Comment</b></div><div metadata='" + local_record + "-count' class='share-count'><b>32</b></div><div id='share-button' metadata='" + local_record + "' class='share-button'><b>Share</b></div></div></div>"
+            post_images = ""
 
-        post_string = "<div class='profile-header'><img src=" + profile_image + " class='profile-image'></img><div class='name'><b>" + profile_name + "</b><div class='profile-bubble'><b class='handle'>@" + profile_handle + "</b></div></div></div><div class='post-body'>" + updated_local_records_source[local_record][1].replace('``', '<div class="small-spacer"></div>') + "<div class='small-spacer'></div><div id='image-area' class='image-area'>{}</div></div><div id='submit-button' class='reactor'><div id='like-button' metadata='" + local_record + "-like'><img id='" + local_record + "-like' class='" + like_class + "' src='" + like_button_src + "'></img></div><div metadata='" + local_record + "-like-count' class='" + like_count_class + "'>" + current_like_count + "</div></div>"
+            image_count = 0
+            file_names = []
 
-        posts += post_string.format(post_images)
+            for image_file in updated_local_records_source[local_record][2].split("+"):
 
-        return {'content':posts, 'cid':current_id, 'nid':next_id}
+                file_names.append(image_file)
+
+                # .format(image_url)
+            for filename in file_names:
+
+                if filename != '':
+
+                    image_count += 1
+                    # exec("image_" + str(image_count) + "_url = url_for('static', filename='/root/Orb-Chat/public/media/" + filename + "')")
+
+                    # file_url = exec(str(image_count) + "file_item = url_for('static', filename='public/media/" + filename + ")")
+                    post_images = post_images + "<img id='" + filename + "' src='" + url_for('static', filename='media/' + filename) + "' class='image-item' style='width: 100%; max-width: 1000px; float: left;'></img>"
+                    
+            # post_string = "<div id='post-headers' class='global-east-content-container-loaded'><div class='profile-header'><img src=" + profile_image + " class='profile-image'></img><div class='name'><b>Justin Filip</b><div class='profile-bubble'><b class='handle'>@RealJustinFilip</b></div></div></div><div class='post-body'>" + updated_local_records_source[local_record][1].replace('``', '<div class="small-spacer"></div>') + "<div id='image-area' class='image-area'>{}</div></div><div id='submit-button' class='reactor'><div metadata='" + local_record + "-count' class='" + like_count_class + "'><b>432</b></div><div id='like-button' metadata='" + local_record + "' class='" + like_class + "'><b>Like</b></div><div metadata='" + local_record + "-count' class='comment-count'><b>87</b></div><div id='comment-button' metadata='" + local_record + "' class='comment-button'><b>Comment</b></div><div metadata='" + local_record + "-count' class='share-count'><b>32</b></div><div id='share-button' metadata='" + local_record + "' class='share-button'><b>Share</b></div></div></div>"
+
+            post_string = "<div class='profile-header'><img src=" + profile_image + " class='profile-image'></img><div class='name'><b>" + profile_name + "</b><div class='profile-bubble'><b class='handle'>@" + profile_handle + "</b></div></div></div><div class='post-body'>" + updated_local_records_source[local_record][1].replace('``', '<div class="small-spacer"></div>') + "<div class='small-spacer'></div><div id='image-area' class='image-area'>{}</div></div><div id='submit-button' class='reactor'><div id='like-button' metadata='" + local_record + "-like'><img id='" + local_record + "-like' class='" + like_class + "' src='" + like_button_src + "'></img></div><div metadata='" + local_record + "-like-count' class='" + like_count_class + "'>" + current_like_count + "</div></div>"
+
+            posts += post_string.format(post_images)
+
+            return {'content':posts, 'cid':current_id, 'nid':next_id}
+            
+        else:
+
+            return {'content':'', 'cid':'-1', 'nid':'-1'}
         
     else:
 
@@ -1245,115 +1132,125 @@ def orb_react():
                                 
         orb_allowed_peers = json.load(orb_allowed_peers_path)
 
-    if user_key in orb_allowed_peers.keys():
+    if uuk in orb_allowed_peers.keys():
 
-        # user specific like tracker 
+        if orb_allowed_peers[uuk] = user_key:
 
-        with open(user_likes_path,'r') as likes_records_path:
-                                    
-            likes_records_source = json.load(likes_records_path)
+            # user specific like tracker 
 
-        try:
-            reaction = request.args['reaction']
+            with open(user_likes_path,'r') as likes_records_path:
+                                        
+                likes_records_source = json.load(likes_records_path)
 
-            if reaction[0] == '0':
+            try:
+                reaction = request.args['reaction']
 
-                if post_id in likes_records_source.keys():
+                if reaction[0] == '0':
 
-                    if reaction[1] == '1':
-                        # add like
+                    if post_id in likes_records_source.keys():
 
-                        timestamp = float(time.time())
+                        if reaction[1] == '1':
+                            # add like
 
-                        current_like_count = int(likes_records_source[post_id][0])
+                            timestamp = float(time.time())
 
-                        like_record = {post_id: [str(current_like_count + 1)]}
+                            current_like_count = int(likes_records_source[post_id][0])
+
+                            like_record = {post_id: [str(current_like_count + 1)]}
+                            likes_records_source.update(like_record)
+
+                            with open(user_likes_path, 'w') as likes_records_path:
+
+                                json.dump(likes_records_source, likes_records_path)
+
+                        else:
+                            # remove like
+                            timestamp = float(time.time())
+
+                            current_like_count = int(likes_records_source[post_id][0])
+
+                            like_record = {post_id: [str(current_like_count - 1)]}
+                            likes_records_source.update(like_record)
+
+                            with open(user_likes_path, 'w') as likes_records_path:
+
+                                json.dump(likes_records_source, likes_records_path)
+
+                    else:
+
+                        like_record = {post_id: ['1']}
                         likes_records_source.update(like_record)
 
                         with open(user_likes_path, 'w') as likes_records_path:
 
                             json.dump(likes_records_source, likes_records_path)
 
+            except:
+
+                return {"message":"failure"}
+
+
+            # global like tracker (this is split out from user likes for no good reason other than maybe I will want isolated like action behaviors, probably will end up condensing this and above block though)
+
+            with open('/root/Orb-Chat/public/feeds/orb_likes.json','r') as likes_records_path:
+                                        
+                likes_records_source = json.load(likes_records_path)
+
+            try:
+                reaction = request.args['reaction']
+
+                if reaction[0] == '0':
+
+                    if post_id in likes_records_source.keys():
+
+                        if reaction[1] == '1':
+                            # add like
+
+                            timestamp = float(time.time())
+
+                            current_like_count = int(likes_records_source[post_id][0])
+
+                            like_record = {post_id: [str(current_like_count + 1)]}
+                            likes_records_source.update(like_record)
+
+                            with open('/root/Orb-Chat/public/feeds/orb_likes.json', 'w') as likes_records_path:
+
+                                json.dump(likes_records_source, likes_records_path)
+
+                        else:
+                            # remove like
+                            timestamp = float(time.time())
+
+                            current_like_count = int(likes_records_source[post_id][0])
+
+                            like_record = {post_id: [str(current_like_count - 1)]}
+                            likes_records_source.update(like_record)
+
+                            with open('/root/Orb-Chat/public/feeds/orb_likes.json', 'w') as likes_records_path:
+
+                                json.dump(likes_records_source, likes_records_path)
+
                     else:
-                        # remove like
-                        timestamp = float(time.time())
 
-                        current_like_count = int(likes_records_source[post_id][0])
-
-                        like_record = {post_id: [str(current_like_count - 1)]}
-                        likes_records_source.update(like_record)
-
-                        with open(user_likes_path, 'w') as likes_records_path:
-
-                            json.dump(likes_records_source, likes_records_path)
-
-                else:
-
-                    like_record = {post_id: ['1']}
-                    likes_records_source.update(like_record)
-
-                    with open(user_likes_path, 'w') as likes_records_path:
-
-                        json.dump(likes_records_source, likes_records_path)
-
-        except:
-
-            return {"message":"failure"}
-
-
-        # global like tracker (this is split out from user likes for no good reason other than maybe I will want isolated like action behaviors, probably will end up condensing this and above block though)
-
-        with open('/root/Orb-Chat/public/feeds/orb_likes.json','r') as likes_records_path:
-                                    
-            likes_records_source = json.load(likes_records_path)
-
-        try:
-            reaction = request.args['reaction']
-
-            if reaction[0] == '0':
-
-                if post_id in likes_records_source.keys():
-
-                    if reaction[1] == '1':
-                        # add like
-
-                        timestamp = float(time.time())
-
-                        current_like_count = int(likes_records_source[post_id][0])
-
-                        like_record = {post_id: [str(current_like_count + 1)]}
+                        like_record = {post_id: ['1']}
                         likes_records_source.update(like_record)
 
                         with open('/root/Orb-Chat/public/feeds/orb_likes.json', 'w') as likes_records_path:
 
                             json.dump(likes_records_source, likes_records_path)
 
-                    else:
-                        # remove like
-                        timestamp = float(time.time())
+                    return {"message":"success"}
+            except:
 
-                        current_like_count = int(likes_records_source[post_id][0])
+                return {"message":"failure"}
 
-                        like_record = {post_id: [str(current_like_count - 1)]}
-                        likes_records_source.update(like_record)
+        else:
 
-                        with open('/root/Orb-Chat/public/feeds/orb_likes.json', 'w') as likes_records_path:
+            return {"message":"not authorized"}
 
-                            json.dump(likes_records_source, likes_records_path)
+    else:
 
-                else:
-
-                    like_record = {post_id: ['1']}
-                    likes_records_source.update(like_record)
-
-                    with open('/root/Orb-Chat/public/feeds/orb_likes.json', 'w') as likes_records_path:
-
-                        json.dump(likes_records_source, likes_records_path)
-
-                return {"message":"success"}
-        except:
-
-            return {"message":"failure"}
+        return {"message":"not authorized"}
 
 #
 
@@ -1420,58 +1317,26 @@ def orb_post():
                                 
         orb_allowed_peers = json.load(orb_allowed_peers_path)
 
-    if user_key in orb_allowed_peers.keys():
+    if uuk in orb_allowed_peers.keys():
 
-        #   POSTS THAT CONTAIN MEDIA
+        if orb_allowed_peers[uuk] = user_key:
 
-        def media_post(file_actions):
 
-            text_content = ''
-            try:
-                text_content = request.args['content']
-            except:
+
+            #   POSTS THAT CONTAIN MEDIA
+
+            def media_post(file_actions):
+
                 text_content = ''
+                try:
+                    text_content = request.args['content']
+                except:
+                    text_content = ''
 
-            def write_record(text_content, file_actions):
+                def write_record(text_content, file_actions):
 
-                post_string = text_content + file_actions
-                post_id = hmac.new(b'secret', post_string.encode('utf-8'), hashlib.sha256).hexdigest()
-
-                with open('/root/Orb-Chat/public/feeds/orb_feed.json','r') as local_records_path:
-                                
-                    updated_local_records_source = json.load(local_records_path)
-
-                if post_id not in updated_local_records_source:
-
-                    timestamp = float(time.time())
-                    updated_local_records = {post_id:[timestamp, text_content, file_actions, uuk]}
-                    updated_local_records.update(updated_local_records_source)
-
-                    with open('/root/Orb-Chat/public/feeds/orb_feed.json', 'w') as local_records_path:
-
-                        json.dump(updated_local_records, local_records_path)
-
-            write_record(text_content, file_actions)
-
-        #   POSTS THAT JUST CONTAIN TEXT
-
-        def text_post():
-            
-            text_content = ''
-
-            try:
-                text_content = request.args['content']
-            except:
-                text_content = ''
-
-            def write_record(text_content):
-
-                post_id = hmac.new(b'secret', text_content.encode('utf-8'), hashlib.sha256).hexdigest()
-
-                if text_content == '':
-                    return "you shouldn't be here!"
-                
-                else:
+                    post_string = text_content + file_actions
+                    post_id = hmac.new(b'secret', post_string.encode('utf-8'), hashlib.sha256).hexdigest()
 
                     with open('/root/Orb-Chat/public/feeds/orb_feed.json','r') as local_records_path:
                                     
@@ -1480,38 +1345,77 @@ def orb_post():
                     if post_id not in updated_local_records_source:
 
                         timestamp = float(time.time())
-                        updated_local_records = {post_id:[timestamp, text_content, '', uuk]}
+                        updated_local_records = {post_id:[timestamp, text_content, file_actions, uuk]}
                         updated_local_records.update(updated_local_records_source)
 
                         with open('/root/Orb-Chat/public/feeds/orb_feed.json', 'w') as local_records_path:
 
                             json.dump(updated_local_records, local_records_path)
 
-            write_record(text_content)
+                write_record(text_content, file_actions)
+
+            #   POSTS THAT JUST CONTAIN TEXT
+
+            def text_post():
+                
+                text_content = ''
+
+                try:
+                    text_content = request.args['content']
+                except:
+                    text_content = ''
+
+                def write_record(text_content):
+
+                    post_id = hmac.new(b'secret', text_content.encode('utf-8'), hashlib.sha256).hexdigest()
+
+                    if text_content == '':
+                        return "you shouldn't be here!"
+                    
+                    else:
+
+                        with open('/root/Orb-Chat/public/feeds/orb_feed.json','r') as local_records_path:
+                                        
+                            updated_local_records_source = json.load(local_records_path)
+
+                        if post_id not in updated_local_records_source:
+
+                            timestamp = float(time.time())
+                            updated_local_records = {post_id:[timestamp, text_content, '', uuk]}
+                            updated_local_records.update(updated_local_records_source)
+
+                            with open('/root/Orb-Chat/public/feeds/orb_feed.json', 'w') as local_records_path:
+
+                                json.dump(updated_local_records, local_records_path)
+
+                write_record(text_content)
 
 
-        file_actions = ""
+            file_actions = ""
 
-        try:
+            try:
 
-            file_actions = request.args['fileactions']
+                file_actions = request.args['fileactions']
 
-            if len(file_actions) > 0:
-                # this is a text/media post
-                media_post(file_actions)
-            else:
+                if len(file_actions) > 0:
+                    # this is a text/media post
+                    media_post(file_actions)
+                else:
+                    text_post()
+
+                return {"message":"success"}
+
+            except:
+
                 text_post()
 
-            return {"message":"success"}
-
-        except:
-
-            text_post()
-
-            return {"message":"success"}
+                return {"message":"success"}
 
                 
     #
+        else:
+
+            return {"message":"not authorized"}
         
 
     else:
@@ -1577,24 +1481,30 @@ def upload_media():
                                 
         orb_allowed_peers = json.load(orb_allowed_peers_path)
 
-    if user_key in orb_allowed_peers.keys():
+    if uuk in orb_allowed_peers.keys():
+
+        if orb_allowed_peers[uuk] = user_key:
 
     
-        file_name = secure_filename(request.args['filename'])
+            file_name = secure_filename(request.args['filename'])
 
-        file = request.files['file']
+            file = request.files['file']
 
-        # if allowed_file(file_name) == True:
-        #     try:
-        #         file.save(os.path.join(application.config['UPLOAD_FOLDER'], file_name))
-        #         return {"message":"success"}
-        #     except:
-        #         return {"message":"failure"}
-        # else:
-        #     return {"message":"unsupported"}
+            # if allowed_file(file_name) == True:
+            #     try:
+            #         file.save(os.path.join(application.config['UPLOAD_FOLDER'], file_name))
+            #         return {"message":"success"}
+            #     except:
+            #         return {"message":"failure"}
+            # else:
+            #     return {"message":"unsupported"}
 
-        file.save(os.path.join(application.config['UPLOAD_FOLDER'], file_name))
-        return {"message":"success"}
+            file.save(os.path.join(application.config['UPLOAD_FOLDER'], file_name))
+            return {"message":"success"}
+
+        else:
+
+            return {"message":"not authorized"}
 
     else:
 

@@ -155,7 +155,7 @@ function join_url() {
         $.ajax({
 
             type: 'GET',
-            url: '/getcode?key=' + encodeURIComponent(readCookie("hashpass")),
+            url: '/getcode?key=' + encodeURIComponent(readCookie("hashpass")) + "&uuk=" + encodeURIComponent(uuk),
             timeout: 60000,
             contentType: false,
             cache: false,
@@ -1632,31 +1632,34 @@ try {
 
     }
 
-    usr = '';
-    hash = '';
+    uuk = CryptoJS.MD5(hash + usr).toString();
 
-    var uuk = "";
 
-    if (uuk == "") {
+    // usr = '';
+    // hash = '';
 
-        $.ajax({
+    // var uuk = "";
 
-            type: 'GET',
-            url: url = '/uuk?key=' + encodeURIComponent(readCookie("hashpass")),
-            timeout: 60000,
-            contentType: false,
-            cache: false,
-            processData: false,
-            success: function(data) {
+    // if (uuk == "") {
 
-                uuk = data['uuk'];
+    //     $.ajax({
 
-                return null
+    //         type: 'GET',
+    //         url: url = '/uuk?key=' + encodeURIComponent(readCookie("hashpass")),
+    //         timeout: 60000,
+    //         contentType: false,
+    //         cache: false,
+    //         processData: false,
+    //         success: function(data) {
+
+    //             uuk = data['uuk'];
+
+    //             return null
     
-            }
+    //         }
     
-        });
-    }
+    //     });
+    // }
 
     
 
