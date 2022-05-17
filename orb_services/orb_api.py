@@ -606,7 +606,7 @@ def orb_reg():
 
     if uuk in orb_allowed_peers.keys():
 
-        if orb_allowed_peers[uuk] = user_key:
+        if orb_allowed_peers[uuk][0] == user_key:
 
             del orb_allowed_peers[user_key]
 
@@ -632,7 +632,7 @@ def orb_reg():
 
         # add new user
 
-        orb_allowed_peers[uuk] = []
+        orb_allowed_peers[uuk] = [user_key]
 
         with open('/root/Orb-Chat/orb_resources/orb_allowed_peers.json','w') as orb_allowed_peers_path:
                             
@@ -670,14 +670,10 @@ def orb_reg():
         
         else:
 
-            with open(user_likes_path, 'w'):
-                pass
+            with open(user_likes_path, 'w') as user_likes_records:
+                json.dump({}, user_likes_records)
 
         return {"message": "success"}
-
-    else:
-
-        return {"message":"not authorized"}
 
 #
 
@@ -746,7 +742,7 @@ def get_code():
 
     if uuk in orb_allowed_peers.keys():
 
-        if orb_allowed_peers[uuk] = user_key:
+        if orb_allowed_peers[uuk][0] == user_key:
 
             mnemo = mnemonic.Mnemonic("english")
 
@@ -910,17 +906,17 @@ def send_posts():
     # user_id = request.args['sn']
     user_key = request.args['key']
     post_id = request.args['id']
+    unique_user_key = request.args['uuk']
 
     with open('/root/Orb-Chat/orb_resources/orb_allowed_peers.json','r') as orb_allowed_peers_path:
                                 
         orb_allowed_peers = json.load(orb_allowed_peers_path)
 
-    unique_user_key = orb_allowed_peers[user_key][0]
     user_likes_path = '/root/Orb-Chat/public/likes/' + unique_user_key + '.json'
 
-    if uuk in orb_allowed_peers.keys():
+    if unique_user_key in orb_allowed_peers.keys():
 
-        if orb_allowed_peers[uuk] = user_key:
+        if orb_allowed_peers[unique_user_key][0] == user_key:
 
             posts = ''
 
@@ -1026,7 +1022,7 @@ def send_posts():
 
 
 
-            if local_record in user_likes_records_source.keys() and user_likes_records_source[local_record] != "0":
+            if local_record in user_likes_records_source.keys() and user_likes_records_source[local_record][0] != "0":
 
                 like_class = 'like-button'
                 like_count_class = 'like-count-liked'
@@ -1134,7 +1130,7 @@ def orb_react():
 
     if uuk in orb_allowed_peers.keys():
 
-        if orb_allowed_peers[uuk] = user_key:
+        if orb_allowed_peers[uuk][0] == user_key:
 
             # user specific like tracker 
 
@@ -1311,7 +1307,7 @@ def orb_post():
     # new 
 
     user_key = request.args['key']
-    
+    # var submit_url = "/post?id=0&content=" + encodeURIComponent(encoded_message) + '&uuk=' + encodeURIComponent(uuk) + "&key=" + encodeURIComponent(readCookie("hashpass")) + "";
 
     with open('/root/Orb-Chat/orb_resources/orb_allowed_peers.json','r') as orb_allowed_peers_path:
                                 
@@ -1319,9 +1315,7 @@ def orb_post():
 
     if uuk in orb_allowed_peers.keys():
 
-        if orb_allowed_peers[uuk] = user_key:
-
-
+        if orb_allowed_peers[uuk][0] == user_key:
 
             #   POSTS THAT CONTAIN MEDIA
 
@@ -1483,9 +1477,8 @@ def upload_media():
 
     if uuk in orb_allowed_peers.keys():
 
-        if orb_allowed_peers[uuk] = user_key:
+        if orb_allowed_peers[uuk][0] == user_key:
 
-    
             file_name = secure_filename(request.args['filename'])
 
             file = request.files['file']

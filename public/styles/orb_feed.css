@@ -293,12 +293,12 @@ textarea {
 
     margin-top: 150px;
     opacity: 25%;
-    animation: rotation 14s infinite linear;
+    /* animation: rotation 14s infinite linear; */
     transition: .2s;
 
 }
 
-@keyframes rotation {
+/* @keyframes rotation {
 
     from {
 
@@ -312,7 +312,7 @@ textarea {
 
     }
 
-  }
+  } */
 
 
 .loading-hidden {

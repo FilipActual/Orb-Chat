@@ -225,87 +225,6 @@ function join_url() {
 
 //
 
-// 88888888888  .d88888b.   .d8888b.   .d8888b.  888      8888888888   
-//     888     d88P" "Y88b d88P  Y88b d88P  Y88b 888      888          
-//     888     888     888 888    888 888    888 888      888          
-//     888     888     888 888        888        888      8888888      
-//     888     888     888 888  88888 888  88888 888      888          
-//     888     888     888 888    888 888    888 888      888          
-//     888     Y88b. .d88P Y88b  d88P Y88b  d88P 888      888          
-//     888      "Y88888P"   "Y8888P88  "Y8888P88 88888888 8888888888   
-                                                                    
-                                                                    
-                                                                    
-//  .d8888b.  8888888888        d8888 8888888b.   .d8888b.  888    888 
-// d88P  Y88b 888              d88888 888   Y88b d88P  Y88b 888    888 
-// Y88b.      888             d88P888 888    888 888    888 888    888 
-//  "Y888b.   8888888        d88P 888 888   d88P 888        8888888888 
-//     "Y88b. 888           d88P  888 8888888P"  888        888    888 
-//       "888 888          d88P   888 888 T88b   888    888 888    888 
-// Y88b  d88P 888         d8888888888 888  T88b  Y88b  d88P 888    888 
-//  "Y8888P"  8888888888 d88P     888 888   T88b  "Y8888P"  888    888 
-
-// TOGGLE SEARCH
-
-// function toggle_search() {
-
-//     var actor_parent = document.getElementById("body-headers");
-
-//     if (search_panel.className == "search-panel-hidden") {
-
-//         actor_parent.className = "hidden";
-//         var conn_button = document.getElementById("conn-button");
-//         var conn_code_div = document.getElementById("conn");
-
-//         if (conn_code_div.className = "conn-visible") {
-//             conn_button.src = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAAEaElEQVRogdXaW+gUZRjH8c9/WzvYCSotMS3SMkvJsnNZkBFBYViYF0UmhVmUnQjFoIjKootOghVlpRddmEbYwS4iypKSsgslIROyMisxo4OhWX+7eHb7z3+dnd3ZGQ99YdjZ2XeeZ37zvvO+z/PMdk2ZMkUJHIAJuAQn4xhUsQGr8REW4tsynKVRLcHG7ZiBo1J+G1bbxuMxzMb9+K0Ev72oFDj3SHyMJ6WLaGQf3IG1uKCA31Q6FXI4VuDsDs7thw8wtkPfqXQipEv0xMCCvt/F0QVt/EcnQp7C8SX5f70kO7mFDMBtZTnHaDERFCavkGllOG3g3jKM5BVyZRlOGxiNQUWN5BHSDycUddiE04oayCNkeFFnGQwoaiCPkAOLOstgv6IG8gj5uaizDP4oaiCPkC+wvajDJhQOJvMI2YLPizpMoRufFTWSd/qdX9RhCm/il6JG8gqZi61FnTbwQBlG8grZptwQZZ6ShmsnQeMLWFCC768xuQQ76DwfmYi3CvhdJ3KZHQVs9KJIhng5nujgvLcxChsz2vTHmSL5GqONtKGIELgLZ2FxG20/FQWKy/BrkzbXYAm+wXKRfC3FGrGOPaRJWt1VUhWFCCgvwggMQR98h1VYVruwZozCs+KmtOJPUeyYnTzYSRVlMGaK+OhubK4dX1PbWlERi2CdK+TLFPviaZyOSUmj7XIwHsFXuAnXi4rIg+KOtmIYHsZJiWPn6TzdvU7MoGh/aI3HHNlln1WisrIO34u73l/04Ck4Fz/gOLGoVsWz0jengEbG4Y12htajmN5Gu5G1LYtJeiKDGbJFdGOReOaycqEX0a+VkNeUVBzA72IWIiaCGS3aT8XzYviv1zz5OgITs4QswaXtX2dLVupZAM/XOlH7svbZrXXidVUzIfOUK4J4huo0K5luFb2wWUzddWaKguAEnJhy3sg0IXeKGaFsNiT2mw2TW/BSyvHnap/3YZMo2SYZ3Dj9DsHjea+wTboS+6XFWHV7jT2ysGQHSZK98FOTNnNwqhha80SETKxbA3G1nXsD1ieFTNDewtYpIxL7S5u02V9PvvOeHiGzcFiG7ZXJobWrhlSdUYn9D0XMlMXQxP62Fm0X1YWMUWKJvwkH4eLa/nax0GbxjAhBVsgu4G3CgrqQm4tcYQ6Si+As2b2yL27Qupw6GTsqYlyOK3R57TNWT6j+j3h5WoS5ogqjgjPs2nJoI68m9peJML4T5uPG+pcKLixwUZ0wCC8nvi8W+fsnbZ6/ReRBk5IHKyJP2N1MEq/w6izHOSLVfUd67aye6g6VMsNWxWvmPcE0sTbcqieHf6W29cexIpn7S+Qxa7OMVZX3YrMTrhUP/HS9h9tG2VWWnaiIeH5P0l8EiqtF+XQsDm1o00csqFM1WVOqegdze5LhIrol/uLxo3iwq+Jm1wW8L4ZaL6p6VzT2Fg6pbWmkLqJFC3R7gtQRVBGhwP+J1JtfUcKLyN3M32kHqyKQu8fe3zPdIgrYkPbjv0VwvXuCF5gmAAAAAElFTkSuQmCC";
-//             conn_code_div.className = "conn-hidden";
-//             conn_visible = 0;
-//         } 
-        
-//         navigation_panel.className = "navigation-panel-hidden";
-//         global_east_panel.className = "global-east-panel-hidden";
-//         search_panel.className = "search-panel";
-
-//     } else {
-
-//         global_east_panel.className = "global-east-panel";
-//         navigation_panel.className = "navigation-panel";
-//         search_panel.className = "search-panel-hidden";
-//         actor_parent.className = "global-headers";
-
-//     }
-    
-// }
-
-//
-
-//
-
-//
-
-//
-
-//
-
-//
-
-//
-
-//
-
-//
-
-//
-
-//
-
-//
-
-//
-
-//
-
 //  .d8888b.  888       888        d8888 8888888b.                                                                            
 // d88P  Y88b 888   o   888       d88888 888   Y88b                                                                           
 // Y88b.      888  d8b  888      d88P888 888    888                                                                           
@@ -653,7 +572,7 @@ function toggle_post_box() {
 
 // POST SUBMIT
 
-function db_action() {
+function db_action(uuk) {
 
     // var actor_textarea_placeholder = document.getElementById("post-input").placeholder;
 
@@ -661,43 +580,38 @@ function db_action() {
 
     var encoded_message = post_message.replace(/\n/g, "``");
 
+    var panel = document.getElementById("global-east-panel");
+    // var search_parent = document.getElementById("search-panel");
 
+    var actor_parent = document.getElementById("body-headers");
+    var nav_parent = document.getElementById("navigation-panel");
+
+    var loading_icon = document.getElementById("loading-icon");
+    var loading_target = document.getElementById("loading-target");
+    
+    loading_icon.className = "loading-icon";
+    loading_target.appendChild(loading_icon);
+    
+    panel.className = "hidden";
+    actor_parent.className = "hidden";
+    nav_parent.className = "hidden";
 
     if (post_message !== '') {
-
-        var panel = document.getElementById("global-east-panel");
-        // var search_parent = document.getElementById("search-panel");
-
-        var actor_parent = document.getElementById("body-headers");
-        var nav_parent = document.getElementById("navigation-panel");
-
-        var loading_icon = document.getElementById("loading-icon");
-        loading_icon.className = "loading-icon";
-        
-        panel.className = "hidden";
-        actor_parent.className = "hidden";
-        nav_parent.className = "hidden";
-        // search_parent.className = "search-panel-hidden";
-        global_east_panel.appendChild(loading_icon);
-        // const loading_screen = document.getElementById("loading");
-        // loading_screen.className = "loading";
 
         // if there are no media, just submit a text post
 
         if (selectedFiles === undefined || selectedFiles.length == 0) {
 
-        var submit_url = "/post?id=0&content=" + encodeURIComponent(encoded_message) + '&uuk=' + encodeURIComponent(uuk) + "&key=" + encodeURIComponent(readCookie("hashpass")) + "";
         
             $.ajax({
 
                 type: 'GET',
-                url: submit_url,
+                url: "/post?content=" + encodeURIComponent(encoded_message) + '&uuk=' + encodeURIComponent(uuk) + "&key=" + encodeURIComponent(readCookie("hashpass")) + "",
                 timeout: 60000,
                 contentType: false,
                 cache: false,
                 processData: false,
                 success: function(data) {
-
                     window.location.href = "/feed";
                     return null
                 }
@@ -729,7 +643,7 @@ function db_action() {
                         
                         $.ajax({
 
-                            type: 'POST',
+                            type: 'GET',
                             url: '/media_post?filename=' + new_filename + '&uuk=' + encodeURIComponent(uuk) + "&key=" + encodeURIComponent(readCookie("hashpass")),
                             data: form_data,
                             timeout: 60000,
@@ -738,7 +652,7 @@ function db_action() {
                             processData: false,
                             success: function(data) {
 
-                                    var submit_url = "/post?id=0"  + "&content=" + encodeURIComponent(encoded_message) + "&fileactions=" + encodeURIComponent(file_actions) + '&uuk=' + encodeURIComponent(uuk) + "&key=" + encodeURIComponent(readCookie("hashpass")) + "";
+                                    var submit_url = "/post?content=" + encodeURIComponent(encoded_message) + "&fileactions=" + encodeURIComponent(file_actions) + '&uuk=' + encodeURIComponent(uuk) + "&key=" + encodeURIComponent(readCookie("hashpass")) + "";
                             
                                     $.ajax({
 
@@ -788,8 +702,6 @@ function db_action() {
 
                     file_actions = file_actions.concat('+', new_filename);
 
-                    var submit_url = "/post?id=0&content=" + encodeURIComponent(encoded_message) + "&fileactions=" + encodeURIComponent(file_actions) + '&uuk=' + encodeURIComponent(uuk) + "&key=" + encodeURIComponent(readCookie("hashpass")) + "";
-
                     try {
 
                         $.ajax({
@@ -803,12 +715,10 @@ function db_action() {
                             processData: false,
                             success: function(data) {
 
-                                console.log(submit_url);
-
                                 $.ajax({
 
                                     type: 'GET',
-                                    url: submit_url,
+                                    url: "/post?content=" + encodeURIComponent(encoded_message) + "&fileactions=" + encodeURIComponent(file_actions) + '&uuk=' + encodeURIComponent(uuk) + "&key=" + encodeURIComponent(readCookie("hashpass")) + "",
                                     timeout: 60000,
                                     contentType: false,
                                     cache: false,
@@ -1144,14 +1054,11 @@ var stored_next_id = "";
 
 function get_posts(id, count) {
 
-    console.log(stored_next_id);
     if (stored_next_id == "-1") {
 
         return null
 
     }
-
-
 
     var loading_icon = document.getElementById("loading-icon");
     post_counter++;
@@ -1159,7 +1066,7 @@ function get_posts(id, count) {
     $.ajax({
 
         type: 'GET',
-        url: '/posts?id=' + id + '&key=' + encodeURIComponent(readCookie("hashpass")),
+        url: '/posts?id=' + id + '&key=' + encodeURIComponent(readCookie("hashpass")) + "&uuk=" + encodeURIComponent(uuk),
         timeout: 60000,
         contentType: false,
         cache: false,
@@ -1211,15 +1118,10 @@ function get_posts(id, count) {
 
                 setTimeout(() => {
 
-                    post_div.className = "global-east-content-container-hidden";
+                    post_div.className = "global-east-content-container-loaded";
+    
+                }, 1000);
 
-                    setTimeout(() => {
-
-                        post_div.className = "global-east-content-container-loaded";
-        
-                    }, 50);
-
-                }, 50);
 
             }
 
@@ -1242,18 +1144,8 @@ function get_posts(id, count) {
 
                 if (loading_icon.className != "loading-done") {
 
-                    setTimeout(() => {
-
                         loading_icon.className = "loading-hidden";
-
-                        setTimeout(() => {
-
-                            loading_icon.className = "loading-done";
             
-                        }, 2000);
-        
-                    }, 500);
-
                 }
 
                 var next_task = get_posts(next_id, count);
@@ -1394,7 +1286,8 @@ hand_button.addEventListener('pointerdown', function(e) {
 post_button.addEventListener('click', function(e) {
 
     e.preventDefault();
-    db_action();
+    console.log(uuk);
+    db_action(uuk);
 
 });
 
@@ -1633,36 +1526,6 @@ try {
     }
 
     uuk = CryptoJS.MD5(hash + usr).toString();
-
-
-    // usr = '';
-    // hash = '';
-
-    // var uuk = "";
-
-    // if (uuk == "") {
-
-    //     $.ajax({
-
-    //         type: 'GET',
-    //         url: url = '/uuk?key=' + encodeURIComponent(readCookie("hashpass")),
-    //         timeout: 60000,
-    //         contentType: false,
-    //         cache: false,
-    //         processData: false,
-    //         success: function(data) {
-
-    //             uuk = data['uuk'];
-
-    //             return null
-    
-    //         }
-    
-    //     });
-    // }
-
-    
-
     var post_id = "-1";
     update_in_progress = 1;
     get_posts(post_id, 10);
