@@ -290,27 +290,24 @@ function join_url() {
 function swap_orientation() {
 
     var connect_button = document.getElementById("conn-button");
-    // var profile_button = document.getElementById("prof-button");
     var home_button = document.getElementById("home-button-icon");
-    // var search_button = document.getElementById("search-button-icon");
+    var logout_button = document.getElementById("logout-button");
 
     if (hand_button.className == 'left-hand') {
 
         hand_button.src = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAAETUlEQVRoge3aW6gWVRQH8J+V5SVLo6CkshvdyYcs9KEkKaJSyEAwooKgDKKgUgsKirKQytJ6OhVZKSH0UEgFFWE3CCNJNKwEy7xkCJkWnlLM08Pew3yNs78z8505+hH94fDfs2ft/a01a2bvtdY+Q/r6+rRi1qxZGsZYPIXpGI4PMA+fdzJZT09Paf8RHSpXFaOxFse19F0d/6ZgRVM/dFhTE2E8lmEj1uNRvCkYsQYTcF6UgaV4AF9hEz7EtE5/vCmPTMQXhb5HIu/DVGyO1zdiEsZhfov8KbgS9+CFugo04ZFheC+238UVwpPdFPt2yo3IsCHyPtyByVgQ+57H2XWVaMIjkzAGPwtPPsNmrMZIjEBvy73hke/FS7H9Kc7FdcKDWKAGmvBI9iF/Xej/PvJwDCncGxq5uHKtjHxMXSWaMGRf5KMK/VWUObZwfXRhzspowpBsIyo+9eJ1GVJj+oqC/aHJ5bdJ7Ko7YLA3xE4xTlimx+M3YVVc225Atxpyf+F6Pu7Dc6kB3fpqEfaax+SRwLNCaFOKbvXIN7hI/tFvwWzMwftlA7rVI6/798r1SuRLUwO61ZCiXqMiDy0KpgZ0C4oKZ5/A3tSAbjWkNv43pNvwnzGkyj4yEicIRu8QEqWuQ8ojR+JBfCbEOj8KO+0OIQucXpA95CjzyFjBgDNK7g3BtfHvHSGTWz1YytVBmUd6BCNW4nacj+OF0s4FeDLKTRW8c8mga1kBZR65JvIcwTOt2IWHsAQfyb0Dfw+GglVR5pHlkZfi5MS474S4p7WgUMzqDm9pFzPBMZFHFPqz1LeRnH0mVuFUoVaVWhC2CqWf1Fw7sSfyX4V76yNvKPSvi/xtSuEUypTci8vwh+CRZSUyGb7Eotg+sXCvF6fjHAcWE2bgTHmlJcMinIXFhf7M28ntIvW0/5Q/7Rm4JTWBkLktERKfIrZhe0n/bvyQmK/oJfLXtLfkHtrv7KswN7Zfk7/XRewXDH21zVwDRfYtbUwJ9BeiPC0UoOHlBhTqFJkhv6YEqsRaN0e+QUg/DwWGRd6TEqhiyBphKSZPOQ82Mo/sTglUjX7vjnyxQ7OTZ9/njpRAVUN2CqELPDEAhTpF9kpvSQnUyUcej3yV8oByMDE58rqUQB1DtuLt2F7YmT4d4TShhAofp4TqZoizI08TDmUOBmZG/gS/p4TqGrIBb8V2MYwYLNwV+cV2Qp3k7HdGnohbOxhfB9OFeK9X+5ivI0O2C2d/hLDkpA7mqIpnWnh/O8FOqygL5ed9y9vIDQTzhNVxt3zFTGIg5aDrI08QDv6bxBQhEyV87P2eKQ7EkF9wU2zPF3L7JjBKfm6/WChy9IuBFujekK9ic9sJ1sDDwgnxWtxWdVATlcZ5kS9vYC5ClE2oq1VGE4ZkoXUq8aqL7Kx9W51BTRiSVTxGNzAXoTzLgf9M0BZNnCH+JHz4tSsfCazAhfJKSyX8A20ltt2NkkvzAAAAAElFTkSuQmCC';
         hand_button.className = "right-hand";
         connect_button.className = connect_button.className + "-left";
-        // profile_button.className = profile_button.className + "-left";
         home_button.className = home_button.className + "-left";
-        // search_button.className = search_button.className + "-left";
+        logout_button.className = logout_button.className + "-left";
 
     } else {
 
         hand_button.src = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAAETElEQVRoge3aachUVRgH8N+bS+6pqVFCEEZCCygVIX2oQAmitJXALKggKdqgD0VIGiJRkERfwiwKEyppU4koCrMsDLFVpc00wYiszKKFgt4+nHOdmfPO3Jk5M+/bEP3h8j/3Oct9/vOce+95zp2+/v5+9bB48eK69hZwGpbjAvRjA5bgs9wB62HVqlU158O7OThOwUfoq7JdjgWx7osuX+8wjuig77nYiH3YgbvwtCDidZwqRGczRuBZITI78TXWY04H169BbkSuwLrEdl/knzCvyr4A32N2PAocj/mxfkOmH4eRE5GpKiKewDlYKAggRKgah3Awlg/iythnbbStx9EZftQgJyKXRN6G66rsw/AUjkzaj6qyXYVXYvktYWrNwFxh6mUjJyLTI29N7Dsjj0jsfRgdyx8mdTsiT8rwowY5Qv6MPDaxjyvpUzzjj0rsRaT+yvCjBjlCCqf6Ent6Xg+N+tR/mbWBHCEHmzcZerRys88QHpHT8ClOGlSPMtFMyNVYMxSOdIqyqTVbRcTLuBfvD7pHmSgTsizyGlwYz0/Hu4PrUh7KhJwX+bHE/twg+dIRyoQUj8b0/ZC+8HoCZUKKl1T6QOj20r8r6GQZ31P4X0iv4T8jpCdv3IjxQhLXjx/wc1njXonIyKryPLwopMe78ZWQfW7FUkysN0CvRGRX5LVCFpmiD2fF42Zh42NndYNeicgJeFxFxEphrTdJyOdnYpGQHk8R9gpq8G9HpEionoz8q5C/p2n0j/gcH8fjzHSgHCETI6dp65jIaf7dp3IPjEzq0sxwDj5pcN2xeCaW30krc6bWe5HTLdDifG9i/wN7YvmbpG5YVXmBxiJgC06O489PK8siUlwk/dWex4kGOrxHmOuHEvvfwnyfiANJ3eTILyjfpHsIs4SNj7OFqVaDMiG/Y4LaX63A7gZ99jawHzJQIKzAZbixxI+5uC2WLzIwqigXsg/HGLjt0028FI9GGC7MAHgYrzVqWHaPFNNgTEmbwcaDwqzYrxKVuigT8kvkUV1yql0ci1tj+fpmjcuEFPtXo0vaDCYeibwJrzZrXCbk28jHdepRBmYKj2O4oZUOZUL2R57VgUO5WB55I75spUOZkA8in9GJRxmYIHxIgnta7VQmZLtww4/TxU9kLaD48rXNwM8QDdFsiVK8bRdmOJSDqbgplm9vp2MzIasjX2to9rMejfymNnc0mwnZLCwJxipfRnQDc3FxLDd9b6RoZfW7LPJSrX3MycFola3YlUJ62xZaEbJaWHdNVkmAuo11Qn6zB3fkDNBqPnJp5GuE1Wo3sUjY7SesbrPQqpDtwpKbMAWml7RtB9OET9pwp2RDoR20kyEuwduxfH/uBRPcHXkLHuhkoHZT3Vsiz8/oWw/nR15R2qoFtOtMkZ2NN/AfDjkoNiN+63SgdoVUZ4vdeBRPiTzk/3w4IKyKdwm7I53iDXwnfPbuCP8Aweiw3AcnSAoAAAAASUVORK5CYII=';
         hand_button.className = "left-hand";
         connect_button.className = connect_button.className.substring(0, connect_button.className.length - 5);
-        // profile_button.className = profile_button.className.substring(0, profile_button.className.length - 5);
         home_button.className = home_button.className.substring(0, home_button.className.length - 5);
-        // search_button.className = search_button.className.substring(0, search_button.className.length - 5);
+        logout_button.className = logout_button.className.substring(0, logout_button.className.length - 5);
         
     }
     

@@ -141,7 +141,7 @@ function send_login() {
     login_button.className = "login-button-waiting";
     login_button.innerHTML = "<b>Loading..</b>";
     var hash_pass = CryptoJS.MD5(hash_key_input.value).toString();
-    uuk = CryptoJS.MD5(hash + usr).toString();
+    uuk = CryptoJS.MD5(hash_pass + screenname_input).toString();
 
 
     $.ajax({
@@ -159,7 +159,7 @@ function send_login() {
         
                 setCookie("username", user_sn);
                 setCookie("hashpass", hash_pass);
-                window.location.href = "/feed";
+                // window.location.href = "/feed";
         
             } else if (data['message'] === "snfail") {
         
@@ -191,65 +191,7 @@ function send_login() {
         }
         
     });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    setCookie("username", screenname_input.value);
-    setCookie("hashpass", hash_pass);
-
-    window.location.href = "/feed";
-
-    return null
+    
 }
 
 screenname_input.addEventListener('keypress', function(e) {
