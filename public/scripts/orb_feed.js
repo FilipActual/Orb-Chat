@@ -1,14 +1,3 @@
-// 8888888b.  8888888888        d8888 8888888b.                      
-// 888   Y88b 888              d88888 888  "Y88b                     
-// 888    888 888             d88P888 888    888                     
-// 888   d88P 8888888        d88P 888 888    888                     
-// 8888888P"  888           d88P  888 888    888                     
-// 888 T88b   888          d88P   888 888    888                     
-// 888  T88b  888         d8888888888 888  .d88P                     
-// 888   T88b 8888888888 d88P     888 8888888P"                      
-                                                                  
-                                                                  
-                                                                  
 //  .d8888b.   .d88888b.   .d88888b.  888    d8P  8888888 8888888888 
 // d88P  Y88b d88P" "Y88b d88P" "Y88b 888   d8P     888   888        
 // 888    888 888     888 888     888 888  d8P      888   888        
@@ -24,6 +13,10 @@ function readCookie(name) {
     
     return (name = new RegExp('(?:^|;\\s*)' + ('' + name).replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&') + '=([^;]*)').exec(document.cookie)) && name[1];
 
+}
+
+function setCookie(name, value) {
+    document.cookie = name + "=" + value;
 }
 
 // var keyValuePairs = document.cookie.split(';');
@@ -78,6 +71,53 @@ function home() {
         location.reload();
 
     }, 300);
+
+}
+
+//
+
+//
+
+//
+
+//
+
+//
+
+//
+
+//
+
+//
+
+//
+
+//
+
+//
+
+//
+
+//
+
+//
+
+// 888       .d88888b.   .d8888b.   .d88888b.  888     888 88888888888 
+// 888      d88P" "Y88b d88P  Y88b d88P" "Y88b 888     888     888     
+// 888      888     888 888    888 888     888 888     888     888     
+// 888      888     888 888        888     888 888     888     888     
+// 888      888     888 888  88888 888     888 888     888     888     
+// 888      888     888 888    888 888     888 888     888     888     
+// 888      Y88b. .d88P Y88b  d88P Y88b. .d88P Y88b. .d88P     888     
+// 88888888  "Y88888P"   "Y8888P88  "Y88888P"   "Y88888P"      888     
+
+// HOME
+
+function logout() {
+
+    setCookie("username", "");
+    setCookie("hashpass", "");
+    window.location.href = "/login";
 
 }
 
@@ -596,129 +636,64 @@ function db_action(uuk) {
     actor_parent.className = "hidden";
     nav_parent.className = "hidden";
 
-    if (post_message !== '') {
+    // if there are no media, just submit a text post
 
-        // if there are no media, just submit a text post
+    if (selectedFiles === undefined || selectedFiles.length == 0) {
 
-        if (selectedFiles === undefined || selectedFiles.length == 0) {
+        $.ajax({
 
-        
-            $.ajax({
+            type: 'GET',
+            url: "/post?content=" + encodeURIComponent(encoded_message) + '&uuk=' + encodeURIComponent(uuk) + "&key=" + encodeURIComponent(readCookie("hashpass")) + "",
+            timeout: 60000,
+            contentType: false,
+            cache: false,
+            processData: false,
+            success: function(data) {
+                window.location.href = "/feed";
+                return null
+            }
 
-                type: 'GET',
-                url: "/post?content=" + encodeURIComponent(encoded_message) + '&uuk=' + encodeURIComponent(uuk) + "&key=" + encodeURIComponent(readCookie("hashpass")) + "",
-                timeout: 60000,
-                contentType: false,
-                cache: false,
-                processData: false,
-                success: function(data) {
-                    window.location.href = "/feed";
-                    return null
-                }
+        })
 
-            })
+    } else { // making a text / media post
 
-        } else { // making a text / media post
+        // if there is no message attached, just do a media post
 
-            // if there is no message attached, just do a media post
+        if (encoded_message.length < 1) {
 
-            if (encoded_message.length < 1) {
+            var file_actions = '';
 
-                // SHOULD NEVER GET HERE (UNTIL WE DO) (TEXT REQUIRED ATM)
-                var file_actions = '';
+            file_actions = file_actions.concat('+', new_filename);
 
-                file_actions = file_actions.concat('+', new_filename);
+            for (var i = 0; i < selectedFiles.length; i++) {
 
-                for (var i = 0; i < selectedFiles.length; i++) {
+                var new_filename_title = md5_files[i];
+                var new_filename_extension = selectedFiles[i].name.substring(selectedFiles[i].name.length - 5).split('.').pop();
+                var new_filename = new_filename_title.concat('.', new_filename_extension);
+                var form_data = new FormData();
 
-                    var new_filename_title = md5_files[i];
-                    var new_filename_extension = selectedFiles[i].name.substring(selectedFiles[i].name.length - 5).split('.').pop();
-                    var new_filename = new_filename_title.concat('.', new_filename_extension);
-                    var form_data = new FormData();
+                form_data.append('file', selectedFiles[i], new_filename);
 
-                    form_data.append('file', selectedFiles[i], new_filename);
+                try {
 
-                    try {
+                    
+                    $.ajax({
 
+                        type: 'POST',
+                        url: '/media_post?filename=' + new_filename + '&uuk=' + encodeURIComponent(uuk) + "&key=" + encodeURIComponent(readCookie("hashpass")),
+                        data: form_data,
+                        timeout: 60000,
+                        contentType: false,
+                        cache: false,
+                        processData: false,
+                        success: function(data) {
+
+                                var submit_url = "/post?content=0&fileactions=" + encodeURIComponent(file_actions) + '&uuk=' + encodeURIComponent(uuk) + "&key=" + encodeURIComponent(readCookie("hashpass")) + "";
                         
-                        $.ajax({
-
-                            type: 'GET',
-                            url: '/media_post?filename=' + new_filename + '&uuk=' + encodeURIComponent(uuk) + "&key=" + encodeURIComponent(readCookie("hashpass")),
-                            data: form_data,
-                            timeout: 60000,
-                            contentType: false,
-                            cache: false,
-                            processData: false,
-                            success: function(data) {
-
-                                    var submit_url = "/post?content=" + encodeURIComponent(encoded_message) + "&fileactions=" + encodeURIComponent(file_actions) + '&uuk=' + encodeURIComponent(uuk) + "&key=" + encodeURIComponent(readCookie("hashpass")) + "";
-                            
-                                    $.ajax({
-
-                                        type: 'GET',
-                                        url: submit_url,
-                                        timeout: 60000,
-                                        contentType: false,
-                                        cache: false,
-                                        processData: false,
-                                        success: function(data) {
-
-                                            window.location.href = "/feed";
-                                            return null
-                                        }
-
-                                    });
-
-                            }
-
-                        });
-
-                    } catch {
-
-
-                        try {
-                            alert("SOMEBODY FUKCED UP");
-                        } catch {
-                            console.log("error alerting");
-                        }
-
-                    }
-
-                }
-
-            } else { // media and a message are present
-
-                var file_actions = '';
-
-                for (var i = 0; i < selectedFiles.length; i++) {
-
-                    var new_filename_title = md5_files[i];
-                    var new_filename_extension = selectedFiles[i].name.substring(selectedFiles[i].name.length - 5).split('.').pop();
-                    var new_filename = new_filename_title.concat('.', new_filename_extension);
-                    var form_data = new FormData();
-
-                    form_data.append('file', selectedFiles[i], new_filename);
-
-                    file_actions = file_actions.concat('+', new_filename);
-
-                    try {
-
-                        $.ajax({
-
-                            type: 'POST',
-                            url: '/media_post?filename=' + new_filename + '&uuk=' + encodeURIComponent(uuk) + "&key=" + encodeURIComponent(readCookie("hashpass")),
-                            data: form_data,
-                            timeout: 60000,
-                            contentType: false,
-                            cache: false,
-                            processData: false,
-                            success: function(data) {
-
                                 $.ajax({
 
                                     type: 'GET',
-                                    url: "/post?content=" + encodeURIComponent(encoded_message) + "&fileactions=" + encodeURIComponent(file_actions) + '&uuk=' + encodeURIComponent(uuk) + "&key=" + encodeURIComponent(readCookie("hashpass")) + "",
+                                    url: submit_url,
                                     timeout: 60000,
                                     contentType: false,
                                     cache: false,
@@ -727,25 +702,84 @@ function db_action(uuk) {
 
                                         window.location.href = "/feed";
                                         return null
-
                                     }
 
                                 });
 
-                            }
-
-                        });
-
-                    } catch {
-
-                        try {
-                            alert("SOMEBODY FUKCED UP");
-                        } catch {
-                            console.log("error alerting");
                         }
-                        // means that either a media post failed or the summary post failed
 
+                    });
+
+                } catch {
+
+
+                    try {
+                        alert("SOMEBODY FUKCED UP");
+                    } catch {
+                        console.log("error alerting");
                     }
+
+                }
+
+            }
+
+        } else { // media and a message are present
+
+            var file_actions = '';
+
+            for (var i = 0; i < selectedFiles.length; i++) {
+
+                var new_filename_title = md5_files[i];
+                var new_filename_extension = selectedFiles[i].name.substring(selectedFiles[i].name.length - 5).split('.').pop();
+                var new_filename = new_filename_title.concat('.', new_filename_extension);
+                var form_data = new FormData();
+
+                form_data.append('file', selectedFiles[i], new_filename);
+
+                file_actions = file_actions.concat('+', new_filename);
+
+                try {
+
+                    $.ajax({
+
+                        type: 'POST',
+                        url: '/media_post?filename=' + new_filename + '&uuk=' + encodeURIComponent(uuk) + "&key=" + encodeURIComponent(readCookie("hashpass")),
+                        data: form_data,
+                        timeout: 60000,
+                        contentType: false,
+                        cache: false,
+                        processData: false,
+                        success: function(data) {
+
+                            $.ajax({
+
+                                type: 'GET',
+                                url: "/post?content=" + encodeURIComponent(encoded_message) + "&fileactions=" + encodeURIComponent(file_actions) + '&uuk=' + encodeURIComponent(uuk) + "&key=" + encodeURIComponent(readCookie("hashpass")) + "",
+                                timeout: 60000,
+                                contentType: false,
+                                cache: false,
+                                processData: false,
+                                success: function(data) {
+
+                                    window.location.href = "/feed";
+                                    return null
+
+                                }
+
+                            });
+
+                        }
+
+                    });
+
+                } catch {
+
+                    try {
+                        alert("SOMEBODY FUKCED UP");
+                    } catch {
+                        console.log("error alerting");
+                    }
+                    // means that either a media post failed or the summary post failed
 
                 }
 
@@ -753,12 +787,8 @@ function db_action(uuk) {
 
         }
 
-    } else {
-
-        var post_input = document.getElementById("post-input");
-        post_input.placeholder = "Add some text!";
-
     }
+
 
 }
 
@@ -1212,11 +1242,9 @@ const post_button = document.getElementById("post-button");
 const actor = document.getElementById("body-headers");
 const hand_button = document.getElementById("hand-button-icon");
 const home_button = document.getElementById("home-button");
-// const search_button = document.getElementById("search-button");
+const logout_button = document.getElementById("logout-button");
 const global_east_panel = document.getElementById("global-east-panel");
 const navigation_panel = document.getElementById("navigation-panel");
-// const search_panel = document.getElementById("search-panel");
-// const close_search_button = document.getElementById("close-search");
 const actor_div = document.getElementById("body-headers");
 
 //
@@ -1271,12 +1299,12 @@ hand_button.addEventListener('pointerdown', function(e) {
 
 });
 
-// search_button.addEventListener('pointerdown', function(e) {
+logout_button.addEventListener('pointerdown', function(e) {
 
-//     e.preventDefault();
-//     toggle_search();
+    e.preventDefault();
+    logout();
 
-// });
+});
 
 // close_search_button.addEventListener('pointerdown', function(e) {
 

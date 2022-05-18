@@ -141,6 +141,108 @@ function send_login() {
     login_button.className = "login-button-waiting";
     login_button.innerHTML = "<b>Loading..</b>";
     var hash_pass = CryptoJS.MD5(hash_key_input.value).toString();
+    uuk = CryptoJS.MD5(hash + usr).toString();
+
+
+    $.ajax({
+
+        type: 'GET',
+        url: '/checksn?sn=' + encodeURIComponent(screenname_input) + '&key=' + encodeURIComponent(readCookie("hashpass")) + "&uuk=" + encodeURIComponent(uuk) + "",
+        timeout: 60000,
+        contentType: false,
+        cache: false,
+        processData: false,
+        success: function(data) {
+            
+            console.log(data['message']);
+            if (data['message'] === "valid") {
+        
+                setCookie("username", user_sn);
+                setCookie("hashpass", hash_pass);
+                window.location.href = "/feed";
+        
+            } else if (data['message'] === "snfail") {
+        
+                try {
+                    alert("Username does not exist.");
+                } catch {
+                    console.log("error alerting");
+                }
+        
+            } else if (data['message'] === "passfail") {
+        
+                try {
+                    alert("Incorrect password.");
+                } catch {
+                    console.log("error alerting");
+                }
+        
+            } else {
+
+                // should never get here, but ya know
+                try {
+                    alert("Incorrect password.");
+                } catch {
+                    console.log("error alerting");
+                }
+
+            }
+                
+        }
+        
+    });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     setCookie("username", screenname_input.value);
     setCookie("hashpass", hash_pass);

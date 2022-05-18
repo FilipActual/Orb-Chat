@@ -370,6 +370,96 @@ def orb_login():
 
 #
 
+#  .d8888b.  888    888 8888888888  .d8888b.  888    d8P  
+# d88P  Y88b 888    888 888        d88P  Y88b 888   d8P   
+# 888    888 888    888 888        888    888 888  d8P    
+# 888        8888888888 8888888    888        888d88K     
+# 888        888    888 888        888        8888888b    
+# 888    888 888    888 888        888    888 888  Y88b   
+# Y88b  d88P 888    888 888        Y88b  d88P 888   Y88b  
+#  "Y8888P"  888    888 8888888888  "Y8888P"  888    Y88b 
+                                                        
+                                                        
+                                                        
+#  .d8888b.  8888888b.  8888888888 8888888b.   .d8888b.   
+# d88P  Y88b 888   Y88b 888        888  "Y88b d88P  Y88b  
+# 888    888 888    888 888        888    888 Y88b.       
+# 888        888   d88P 8888888    888    888  "Y888b.    
+# 888        8888888P"  888        888    888     "Y88b.  
+# 888    888 888 T88b   888        888    888       "888  
+# Y88b  d88P 888  T88b  888        888  .d88P Y88b  d88P  
+#  "Y8888P"  888   T88b 8888888888 8888888P"   "Y8888P"   
+    
+# CHECK CREDS
+
+@application.route('/checkcreds', methods=['GET'])
+def orb_check_creds():
+
+    user_id = request.args['sn']
+    key = request.args['key']
+    uuk = request.args['uuk']
+
+    with open('/root/Orb-Chat/orb_resources/orb_allowed_peers.json','r') as orb_allowed_peers_path:
+                            
+        orb_allowed_peers = json.load(orb_allowed_peers_path)
+
+    with open('/root/Orb-Chat/orb_resources/orb_screennames.json','r') as orb_screennames_path:
+                                
+        orb_screennames = json.load(orb_screennames_path)
+
+    if user_id in orb_screennames:
+        pass
+    
+    else:
+
+        return {"message": "snfail"}
+
+    if uuk in orb_allowed_peers.keys():
+
+        if orb_allowed_peers[uuk][0] == uuk + user_key:
+
+            return {"message": "valid"}
+
+        else:
+
+            return {"message": "passfail"}
+
+    else:
+
+        return {"message": "passfail"}
+
+#
+
+#
+
+#
+
+#
+
+#
+
+#
+
+#
+
+#
+
+#
+
+#
+
+#
+
+#
+
+#
+
+#
+
+#
+
+#
+
 #   888888  .d88888b.  8888888 888b    888 
 #     "88b d88P" "Y88b   888   8888b   888 
 #      888 888     888   888   88888b  888 
@@ -590,13 +680,13 @@ def orb_reg():
                                 
         orb_access_keys = json.load(orb_access_keys_path)
 
-    del orb_access_keys[join_key]
+    # del orb_access_keys[join_key]
 
+    # uncomment for prod 
+    
     with open('/root/Orb-Chat/orb_resources/orb_access_keys.json','w') as orb_access_keys_path:
 
         json.dump(orb_access_keys, orb_access_keys_path)
-
-    
 
     with open('/root/Orb-Chat/orb_resources/orb_allowed_peers.json','r') as orb_allowed_peers_path:
                             
@@ -1324,8 +1414,12 @@ def orb_post():
                 text_content = ''
                 try:
                     text_content = request.args['content']
+
+                    if text_content == "0":
+                        text_content = " "
+                        
                 except:
-                    text_content = ''
+                    text_content = ""
 
                 def write_record(text_content, file_actions):
 
