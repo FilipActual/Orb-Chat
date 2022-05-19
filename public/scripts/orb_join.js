@@ -92,7 +92,10 @@ pc_field.addEventListener('keypress', function(e) {
     if (e.which == 13 || e.keyCode == 13) {
 
         e.preventDefault();
-        send_join();
+
+        if (processing_join == 0) {
+            send_join();
+        }
 
     } else {
 
@@ -269,8 +272,11 @@ fileList.addEventListener('change', function(e) {
 
 // var img_name_input = document.getElementById("");
 var join_button = document.getElementById("join-button");
+var processing_join = 0;
 
 function send_join() {
+
+    processing_join = 1;
 
     var screenname_input = document.getElementById("join-input-username");
     var display_name_input = document.getElementById("join-input-display-name");
@@ -287,6 +293,7 @@ function send_join() {
     if (avi_container.src === "" || screenname_input.value === "" || display_name_input.value === "") {
 
         try {
+            processing_join = 0;
             window.alert("Please fill out all fields according to the criteria and provide a profile image.");
         } catch {
             console.log("error alerting");
@@ -311,25 +318,17 @@ function send_join() {
             processData: false,
             success: function(data) {
                 
-                console.log(data['message']);
                 // if user avi  upload was success, redirect user to feed
                 if (data['message'] === "available") {
             
                     var user_sn = screenname_input.value;
                     var user_dn = display_name_input.value;
                     var hash_pass = CryptoJS.MD5(hash_key_conf.value).toString();
-            
                     var unique_user_key = CryptoJS.MD5(hash_pass + user_sn).toString();
             
                     setCookie("username", user_sn);
                     setCookie("hashpass", hash_pass);
             
-                    // function finish_reg(new_filename, form_data) {
-
-                        
-                        
-                    // }
-
                     var new_filename_title = md5_files[0];
                     var new_filename_extension = selectedFiles[0].name.substring(selectedFiles[0].name.length - 5).split('.').pop();
                     var new_filename = new_filename_title.concat('.', new_filename_extension);
@@ -412,6 +411,8 @@ function send_join() {
                                 }
     
                             } else {
+
+                                processing_join = 0;
     
                                 // user registration failed
                                 try {
@@ -431,6 +432,8 @@ function send_join() {
 
                 } else {
 
+                    processing_join = 0;
+
                     join_button.className = "join-button";
                     join_button.innerHTML = "<b>Join</b>";
 
@@ -447,6 +450,9 @@ function send_join() {
         });
 
     } else {
+
+        processing_join = 0;
+
         hash_key_input.className = "join-textarea-blur-error";
         hash_key_conf.className = "join-textarea-blur-error";
 
@@ -464,7 +470,11 @@ function send_join() {
 }
 
 join_button.addEventListener('click', function(e) {
-    send_join();
+
+    if (processing_join == 0) {
+        send_join();
+    }
+
 });
 
 //

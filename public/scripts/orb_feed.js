@@ -1313,7 +1313,6 @@ logout_button.addEventListener('pointerdown', function(e) {
 post_button.addEventListener('click', function(e) {
 
     e.preventDefault();
-    console.log(uuk);
     db_action(uuk);
 
 });

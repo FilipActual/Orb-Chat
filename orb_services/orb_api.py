@@ -416,7 +416,7 @@ def orb_check_creds():
 
     if uuk in orb_allowed_peers.keys():
 
-        if orb_allowed_peers[uuk][0] == uuk + user_key:
+        if orb_allowed_peers[uuk][0] == uuk + key:
 
             return {"message": "valid"}
 
@@ -715,7 +715,19 @@ def orb_reg():
             with open('/root/Orb-Chat/orb_resources/orb_users.json','w') as orb_users_path:
                                 
                 json.dump(orb_users, orb_users_path)
-            
+
+            with open('/root/Orb-Chat/orb_resources/orb_user_meta.json','r') as orb_user_meta_path:
+                                
+                orb_user_meta = json.load(orb_user_meta_path)
+
+            if uuk in orb_user_meta.keys():
+
+                del orb_user_meta[uuk]
+
+            with open('/root/Orb-Chat/orb_resources/orb_user_meta.json','w') as orb_user_meta_path:
+                                
+                json.dump(orb_user_meta, orb_user_meta_path)
+
             return {"message": "success"}
 
     else:
@@ -737,6 +749,16 @@ def orb_reg():
         with open('/root/Orb-Chat/orb_resources/orb_users.json','w') as orb_users_path:
                             
             json.dump(orb_users, orb_users_path)
+
+        with open('/root/Orb-Chat/orb_resources/orb_user_meta.json','r') as orb_user_meta_path:
+                            
+            orb_user_meta = json.load(orb_user_meta_path)
+
+        orb_user_meta[uuk] = [user_id, user_dn, user_image]
+
+        with open('/root/Orb-Chat/orb_resources/orb_user_meta.json','w') as orb_user_meta_path:
+                            
+            json.dump(orb_user_meta, orb_user_meta_path)
 
         with open('/root/Orb-Chat/orb_resources/orb_screennames.json','r') as orb_screennames_path:
                             
@@ -1071,13 +1093,13 @@ def send_posts():
 
             uuk = updated_local_records_source[local_record][3]
 
-            with open('/root/Orb-Chat/orb_resources/orb_users.json','r') as orb_users_path:
+            with open('/root/Orb-Chat/orb_resources/orb_user_meta.json','r') as orb_user_meta_path:
                                     
-                orb_users = json.load(orb_users_path)
+                orb_user_meta = json.load(orb_user_meta_path)
 
-            post_user_record = orb_users[uuk + user_key]
+            post_user_record = orb_user_meta[uuk]
 
-            profile_image = url_for('static', filename='media/' + post_user_record[2] + '') # = profile image of screenname from post, found in orb_users.json
+            profile_image = url_for('static', filename='media/' + post_user_record[2] + '') # = profile image of screenname from post, found in orb_user_meta.json
 
             profile_name = post_user_record[1]
 

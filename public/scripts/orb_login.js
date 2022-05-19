@@ -137,33 +137,35 @@ var hash_key_input = document.getElementById("login-input-password");
 var screenname_input = document.getElementById("login-input-username");
 
 function send_login() {
-    
+
+    var hash_key_input_value = document.getElementById("login-input-password").value;
+    var screenname_input_value = document.getElementById("login-input-username").value;
+    var hash_pass = CryptoJS.MD5(hash_key_input_value).toString();
     login_button.className = "login-button-waiting";
     login_button.innerHTML = "<b>Loading..</b>";
-    var hash_pass = CryptoJS.MD5(hash_key_input.value).toString();
-    uuk = CryptoJS.MD5(hash_pass + screenname_input).toString();
-
+    var uuk = CryptoJS.MD5(hash_pass + screenname_input_value).toString();
 
     $.ajax({
 
         type: 'GET',
-        url: '/checksn?sn=' + encodeURIComponent(screenname_input) + '&key=' + encodeURIComponent(readCookie("hashpass")) + "&uuk=" + encodeURIComponent(uuk) + "",
+        url: '/checkcreds?sn=' + encodeURIComponent(screenname_input_value) + '&key=' + encodeURIComponent(hash_pass) + "&uuk=" + encodeURIComponent(uuk) + "",
         timeout: 60000,
         contentType: false,
         cache: false,
         processData: false,
         success: function(data) {
             
-            console.log(data['message']);
             if (data['message'] === "valid") {
         
-                setCookie("username", user_sn);
+                setCookie("username", screenname_input_value);
                 setCookie("hashpass", hash_pass);
-                // window.location.href = "/feed";
+                window.location.href = "/feed";
         
             } else if (data['message'] === "snfail") {
         
                 try {
+                    login_button.className = "login-button";
+                    login_button.innerHTML = "<b>Login</b>";
                     alert("Username does not exist.");
                 } catch {
                     console.log("error alerting");
@@ -172,6 +174,8 @@ function send_login() {
             } else if (data['message'] === "passfail") {
         
                 try {
+                    login_button.className = "login-button";
+                    login_button.innerHTML = "<b>Login</b>";
                     alert("Incorrect password.");
                 } catch {
                     console.log("error alerting");
@@ -181,6 +185,8 @@ function send_login() {
 
                 // should never get here, but ya know
                 try {
+                    login_button.className = "login-button";
+                    login_button.innerHTML = "<b>Login</b>";
                     alert("Incorrect password.");
                 } catch {
                     console.log("error alerting");
