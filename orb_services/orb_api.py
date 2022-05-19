@@ -1445,7 +1445,9 @@ def orb_post():
 
                 def write_record(text_content, file_actions):
 
-                    post_string = text_content + file_actions
+                    timestamp = float(time.time())
+
+                    post_string = str(timestamp) + file_actions + uuk
                     post_id = hmac.new(b'secret', post_string.encode('utf-8'), hashlib.sha256).hexdigest()
 
                     with open('/root/Orb-Chat/public/feeds/orb_feed.json','r') as local_records_path:
@@ -1454,7 +1456,6 @@ def orb_post():
 
                     if post_id not in updated_local_records_source:
 
-                        timestamp = float(time.time())
                         updated_local_records = {post_id:[timestamp, text_content, file_actions, uuk]}
                         updated_local_records.update(updated_local_records_source)
 

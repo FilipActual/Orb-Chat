@@ -656,11 +656,9 @@ function db_action(uuk) {
 
         // if there is no message attached, just do a media post
 
-        if (encoded_message.length < 1) {
+        if (post_message.length < 1) {
 
             var file_actions = '';
-
-            file_actions = file_actions.concat('+', new_filename);
 
             for (var i = 0; i < selectedFiles.length; i++) {
 
@@ -668,6 +666,8 @@ function db_action(uuk) {
                 var new_filename_extension = selectedFiles[i].name.substring(selectedFiles[i].name.length - 5).split('.').pop();
                 var new_filename = new_filename_title.concat('.', new_filename_extension);
                 var form_data = new FormData();
+
+                file_actions = file_actions.concat('+', new_filename);
 
                 form_data.append('file', selectedFiles[i], new_filename);
 
@@ -677,7 +677,7 @@ function db_action(uuk) {
                     $.ajax({
 
                         type: 'POST',
-                        url: '/media_post?filename=' + new_filename + '&uuk=' + encodeURIComponent(uuk) + "&key=" + encodeURIComponent(readCookie("hashpass")),
+                        url: '/media_post?filename=' + encodeURIComponent(new_filename) + '&uuk=' + encodeURIComponent(uuk) + "&key=" + encodeURIComponent(readCookie("hashpass")),
                         data: form_data,
                         timeout: 60000,
                         contentType: false,
@@ -685,12 +685,10 @@ function db_action(uuk) {
                         processData: false,
                         success: function(data) {
 
-                                var submit_url = "/post?content=0&fileactions=" + encodeURIComponent(file_actions) + '&uuk=' + encodeURIComponent(uuk) + "&key=" + encodeURIComponent(readCookie("hashpass")) + "";
-                        
                                 $.ajax({
 
                                     type: 'GET',
-                                    url: submit_url,
+                                    url: "/post?content=" + encodeURIComponent("0") + "&fileactions=" + encodeURIComponent(file_actions) + '&uuk=' + encodeURIComponent(uuk) + "&key=" + encodeURIComponent(readCookie("hashpass")) + "",
                                     timeout: 60000,
                                     contentType: false,
                                     cache: false,
@@ -735,18 +733,24 @@ function db_action(uuk) {
 
                 file_actions = file_actions.concat('+', new_filename);
 
+                if (post_message == "") {
+                    encoded_message = "0";
+                }
+
                 try {
 
                     $.ajax({
 
                         type: 'POST',
-                        url: '/media_post?filename=' + new_filename + '&uuk=' + encodeURIComponent(uuk) + "&key=" + encodeURIComponent(readCookie("hashpass")),
+                        url: '/media_post?filename=' + encodeURIComponent(new_filename) + '&uuk=' + encodeURIComponent(uuk) + "&key=" + encodeURIComponent(readCookie("hashpass")),
                         data: form_data,
                         timeout: 60000,
                         contentType: false,
                         cache: false,
                         processData: false,
                         success: function(data) {
+
+                            console.log()
 
                             $.ajax({
 
