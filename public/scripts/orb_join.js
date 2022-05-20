@@ -21,6 +21,14 @@ var pc_field = document.getElementById("join-input-pass-confirm");
 var screenname_input = document.getElementById("join-input-username");
 
 function pass_refresh(field) {
+
+    if (p_field.className == "join-textarea-blur-error") {
+        p_field.className = "join-textarea-blur";
+    }
+
+    if (pc_field.className == "join-textarea-blur-error") {
+        pc_field.className = "join-textarea-blur";
+    }
     
     if (field.value.length !== 0) {
         if (field.className == "join-textarea-blur") {
@@ -290,11 +298,13 @@ function send_join() {
     join_button.className = "join-button-loading";
     join_button.innerHTML = "<b>Loading..</b>";
 
-    if (avi_container.src == "" || avi_container.src == null || screenname_input.value == "" || display_name_input.value == "") {
+    if (screenname_input.value == "" || display_name_input.value == "") {
 
         try {
             processing_join = 0;
-            window.alert("Please fill out all fields according to the criteria and provide a profile image.");
+            join_button.className = "join-button";
+            join_button.innerHTML = "<b>Join</b>";
+            window.alert("Please fill out all fields according to the criteria.");
         } catch {
             console.log("error alerting");
         }
@@ -328,11 +338,23 @@ function send_join() {
             
                     setCookie("username", user_sn);
                     setCookie("hashpass", hash_pass);
-            
-                    var new_filename_title = md5_files[0];
-                    var new_filename_extension = selectedFiles[0].name.substring(selectedFiles[0].name.length - 5).split('.').pop();
-                    var new_filename = new_filename_title.concat('.', new_filename_extension);
-                    var form_data = new FormData();
+                    
+                    try {
+                        var new_filename_title = md5_files[0];
+                        var new_filename_extension = selectedFiles[0].name.substring(selectedFiles[0].name.length - 5).split('.').pop();
+                        var new_filename = new_filename_title.concat('.', new_filename_extension);
+                        var form_data = new FormData();
+                    } catch {
+                        try {
+                            processing_join = 0;
+                            join_button.className = "join-button";
+                            join_button.innerHTML = "<b>Join</b>";
+                            window.alert("Please provide a profile image.");
+                        } catch {
+                            console.log("error alerting");
+                        }
+                    }
+                    
         
                     form_data.append('file', selectedFiles[0], new_filename);
 
@@ -457,6 +479,8 @@ function send_join() {
         hash_key_conf.className = "join-textarea-blur-error";
 
         try {
+            join_button.className = "join-button";
+            join_button.innerHTML = "<b>Join</b>";
             window.alert("Please make sure the passwords match, are not blank, and meet the critiera.");
         } catch {
             console.log("error alerting");
