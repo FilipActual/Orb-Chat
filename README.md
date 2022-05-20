@@ -22,15 +22,15 @@ Ubuntu Server Operating System
 
 4) Ensure "root" is shown as the user. Change to "root" if not.
 
-5) In the terminal, run the following command:
+5) In the terminal, from the /root directory, run the following command:
 
     git clone https://github.com/FilipActual/Orb-Chat.git
 
-6) Run the following command:
+6) Then, run the following command:
 
     cd /root/Orb-Chat/
 
-7) Run the following command:
+7) Finally, run the following command:
 
     sudo sh system_resources/init.sh
 
@@ -38,13 +38,15 @@ Ubuntu Server Operating System
 
 9) Open /root/Orb-Chat/orb_resources/orb_information.json, there you will find the onion address for your Orb.
 
-10) Using a Tor VPN (such as Orbot, orbot.app) and your Chrome or Safari mobile browser; or Tor Browser (torproject.com) for desktop, take the .onion address you got and add /join?key=admin, navigate to that completed URL in your browser and complete your profile setup.
+10) Using a Tor VPN (such as Orbot, orbot.app) and your Chrome or Safari mobile browser; or Tor Browser (torproject.com) for desktop, take the .onion address you got and add /join?key=admin, navigate to that full URL in your browser and complete your profile setup.
+
+(Ex: bzgjjfernk5bm3kp2p72id6vizi56cxgzowdkt566efiwjd34jbmcwqd.onion/join?key=admin)
 
 #### Tips
 
-Using a virtual machine or dedicated machine is fine, either way.
-Limit to 1 Orb per LAN, unlimited if used with a VPN (not included).
+1) Using a virtual machine or dedicated machine is fine, either way.
+Limit to 1 Orb per LAN, unlimited if used with a VPN that is installed on the machine (not included).
 
-When installing Orbot, allow the VPN configuration.
+2) When installing Orbot, allow the VPN configuration.
 
-Brave browser and most built-in-app browsers force https, which invalidates the security model of Tor, so do not use them. It will likely not work anyway.
+3) Brave browser and most built-in-app browsers force https, which invalidates the security model of Tor, so do not use them. It will likely not work anyway.
