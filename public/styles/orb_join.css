@@ -148,15 +148,15 @@ textarea {
     border-radius: 90px 90px 90px 90px;
     z-index: 999;
     margin-bottom: 30px;
-    margin-top: 10px;
+    margin-top: 20px;
 }
 
 .pick-avi-button {
 
     position: relative;
     height: 17px;
-    margin-top: 95px;
-    margin-bottom: -95px;
+    margin-top: 125px;
+    margin-bottom: -122px;
     justify-content: center;
     z-index: 1000;
 

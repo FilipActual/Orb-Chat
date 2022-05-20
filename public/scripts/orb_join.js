@@ -290,7 +290,7 @@ function send_join() {
     join_button.className = "join-button-loading";
     join_button.innerHTML = "<b>Loading..</b>";
 
-    if (avi_container.src === "" || screenname_input.value === "" || display_name_input.value === "") {
+    if (avi_container.src == "" || avi_container.src == null || screenname_input.value == "" || display_name_input.value == "") {
 
         try {
             processing_join = 0;

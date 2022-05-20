@@ -1,23 +1,16 @@
 # Orb Chat
-## A Self-hosted, Tor secured, privacy first, invite only chat platform.
+### A Self-hosted, Tor secured, privacy first, invite only chat platform.
 Twitter: @OrbChat
 
 Orb Chat was born out of a desire for a way to communicate with people securely and privately. I don't want to have to trust that apps like Signal, WhatsApp, Telegram, etc.. have my best interest in mind. Companies who offer free apps are notorious for capturing and selling your data.
 
-## Setup
-
-###### Recommended minimum host machine specifications:
+#### Recommended minimum host machine specifications:
 
 1 core processor
 1GB of RAM
 25GB of drive storage
 Wired network connection
 Ubuntu Server Operating System
-
-###### Tips
-
-Using a virtual machine or dedicated machine is fine, either way.
-Limit to 1 Orb per LAN, unlimited if used with a VPN (not included).
 
 ## Setup
 
@@ -41,11 +34,17 @@ Limit to 1 Orb per LAN, unlimited if used with a VPN (not included).
 
     sudo sh system_resources/init.sh
 
-8) Wait about 5 minutes. The machine will reboot itself.
+8) Wait a few minutes. The machine will reboot itself.
 
 9) Open /root/Orb-Chat/orb_resources/orb_information.json, there you will find the onion address for your Orb.
 
-10) Using a Tor VPN or Tor Browser, navigate to the onion address you got from the previous step.
+10) Using a Tor VPN (such as Orbot, orbot.app) and your Chrome or Safari mobile browser; or Tor Browser (torproject.com) for desktop, take the .onion address you got and add /join?key=admin, navigate to that completed URL in your browser and complete your profile setup.
 
-11) Complete the guided setup procedures.
+#### Tips
 
+Using a virtual machine or dedicated machine is fine, either way.
+Limit to 1 Orb per LAN, unlimited if used with a VPN (not included).
+
+When installing Orbot, allow the VPN configuration.
+
+Brave browser and most built-in-app browsers force https, which invalidates the security model of Tor, so do not use them. It will likely not work anyway.
