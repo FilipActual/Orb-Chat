@@ -84,8 +84,6 @@ def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-#
-
 def bip39(mnemonic_words):
     mobj = mnemonic.Mnemonic("english")
     seed = mobj.to_seed(mnemonic_words)
@@ -100,7 +98,6 @@ def bip39(mnemonic_words):
     ).ChildKey(0).ChildKey(0)
 
     return bip32_child_key_obj.Address()
-    #, binascii.hexlify(bip32_child_key_obj.PublicKey()).decode(), bip32_child_key_obj.WalletImportFormat()
 
 #
 
@@ -193,51 +190,7 @@ def bip39(mnemonic_words):
 @application.route('/', methods=['GET'])
 def orb_main():
 
-    # with open('/root/Orb-Chat/public/pages/orb_main.html', 'r') as ui_code_source:
-    #     ui_code = ui_code_source.read()
-
-    # style = url_for('static', filename='styles/orb_main.css')
-    # script = url_for('static', filename='scripts/orb_main.js')
-    # # orb = url_for('static', filename='media/orb.png')
-
-    # return ui_code.format(style, script) # pull connection info separately
-
     return redirect('/feed')
-        
-
-            # not first setup
-
-            # return INIT PAGE (checks if cookie exists, then tries feed request from that page
-
-            # INIT PAGE (AUTH & REDIRECT TO FEED   # OR #    REDIRECT TO /login IF NONE)
-
-            #
-
-            #
-            
-            # 
-
-
-
-        # do initial setup
-
-        # snapshot 24 words in memory
-        # md5 hash 24 words, replace words in orb_information
-
-        # RETURN PAGE WHERE:
-            # deliver 24 words from memory to user
-            # deliver hidden temp key for join
-
-            # input user id
-                # get user input as string, store in cookie
-
-            # input user password
-                # get user input, md5 it, store in cookie
-
-            # input user image
-                # get user input as image, send to media directory, send in separate request
-            
-            # REDIRECT to /join with id and hashpass from cookie, image name from input, and join key from hidden temp key on page
 
 #
 
@@ -291,84 +244,6 @@ def orb_login():
     script = url_for('static', filename='scripts/orb_login.js')
 
     return ui_code.format(style, script)
-
-    #
-
-    # SIGN IN / STORE IN COOKIE
-
-    # IF COOKIE EXISTS
-
-    # REDIRECT to /feed with id and hashpass from cookie
-
-    # ELSE
-
-    # 
-
-    # INPUT LOGIN INFO
-
-    #
-
-    # input user id
-        # get user input as string, store in cookie
-
-    # input user password
-        # get user input, md5 it, store in cookie
-
-    # REDIRECT to /feed with id and hashpass from cookie
-
-
-    #
-
-    # OR JOIN WITH KEYCODE
-
-    #
-
-    # input user id
-        # get user input as string, store in cookie, send in request
-
-    # input user password
-        # get user input, md5 it, store in cookie, send in request
-
-    # input user image
-        # get user input as image, send to media directory, send in request
-
-    # input join key code
-        # get user input as string, send in request
-
- 
-    # REDIRECT to /join with fields above as url parameters after separate request sending image
-
-#
-
-#
-
-#
-
-#
-
-#
-
-#
-
-#
-
-#
-
-#
-
-#
-
-#
-
-#
-
-#
-
-#
-
-#
-
-#
 
 #  .d8888b.  888    888 8888888888  .d8888b.  888    d8P  
 # d88P  Y88b 888    888 888        d88P  Y88b 888   d8P   
@@ -476,8 +351,6 @@ def orb_check_creds():
 
 @application.route('/join', methods=['GET'])
 def orb_join():
-    
-#ex
 
     join_key = request.args['key']
 
@@ -498,23 +371,7 @@ def orb_join():
 
         return ui_code.format(style, script, join_key)
 
-            # input user id
-            # get user input as string, store in cookie, send in request
-
-            # input user password
-                # get user input, md5 it, store in cookie, send in request
-
-            # input user image
-                # get user input as image, send to media directory, send in request
-
-            # input join key code (auto entered from request)
-                # send in request
-
-            # REDIRECT to /reg with id and hashpass from cookie, user image name and join key code from input form
-
     else:
-
-        # redirect to invalid join key page
 
         with open('/root/Orb-Chat/public/pages/orb_invalid.html', 'r') as ui_code_source:
 
@@ -952,12 +809,9 @@ def orb_feed():
 
     style = url_for('static', filename='styles/orb_feed.css')
     script = url_for('static', filename='scripts/orb_feed.js')
-    # orb = url_for('static', filename='media/orb.png')
 
     return ui_code.format(style, script) # pull connection info separately
-
-
-
+  
 #
 
 #
@@ -1013,7 +867,6 @@ def orb_feed():
 @application.route('/posts', methods=['GET'])
 def send_posts():
 
-    # user_id = request.args['sn']
     user_key = request.args['key']
     post_id = request.args['id']
     unique_user_key = request.args['uuk']
@@ -1037,7 +890,6 @@ def send_posts():
             with open('/root/Orb-Chat/public/feeds/orb_feed.json','r') as local_records_path:
                                 
                 updated_local_records_source = json.load(local_records_path)
-                # "postid": [time created, text_content, file_actions, uuk]
 
             with open('/root/Orb-Chat/public/feeds/orb_feed.json','r') as local_records_path:
                                 
@@ -1046,8 +898,6 @@ def send_posts():
                 if len(updated_local_records_source) < 1:
 
                     return {'content':'', 'cid':'-1', 'nid':'-1'}
-
-            # for local_record in updated_local_records_source: # up to a certain threshold per request? # 
 
             keys_list = list(updated_local_records_source)
 
@@ -1103,34 +953,9 @@ def send_posts():
 
             profile_handle = post_user_record[0]
 
-
-
-
-
-
-            # likes_path = '/root/Orb-Chat/public/activity/post_likes/' + local_record + '.json'
-            # if os.path.exists(likes_path):
-            #   with open(likes_path, 'r') as likes_path_record:
-            #       get length of dict
-            #       dict has {uuk of user that liked it : ""}
-
             with open(user_likes_path,'r') as user_likes_records_path:
                                         
                 user_likes_records_source = json.load(user_likes_records_path)
-
-
-
-
-
-
-            # GET SOME FOOD THEN FIX THE ERROR IN THE TERMINAL
-
-
-
-
-
-
-
 
             if local_record in user_likes_records_source.keys() and user_likes_records_source[local_record][0] != "0":
 
@@ -1166,18 +991,13 @@ def send_posts():
 
                 file_names.append(image_file)
 
-                # .format(image_url)
             for filename in file_names:
 
                 if filename != '':
 
                     image_count += 1
-                    # exec("image_" + str(image_count) + "_url = url_for('static', filename='/root/Orb-Chat/public/media/" + filename + "')")
 
-                    # file_url = exec(str(image_count) + "file_item = url_for('static', filename='public/media/" + filename + ")")
                     post_images = post_images + "<img id='" + filename + "' src='" + url_for('static', filename='media/' + filename) + "' class='image-item' style='width: 100%; max-width: 1000px; float: left;'></img>"
-                    
-            # post_string = "<div id='post-headers' class='global-east-content-container-loaded'><div class='profile-header'><img src=" + profile_image + " class='profile-image'></img><div class='name'><b>Justin Filip</b><div class='profile-bubble'><b class='handle'>@RealJustinFilip</b></div></div></div><div class='post-body'>" + updated_local_records_source[local_record][1].replace('``', '<div class="small-spacer"></div>') + "<div id='image-area' class='image-area'>{}</div></div><div id='submit-button' class='reactor'><div metadata='" + local_record + "-count' class='" + like_count_class + "'><b>432</b></div><div id='like-button' metadata='" + local_record + "' class='" + like_class + "'><b>Like</b></div><div metadata='" + local_record + "-count' class='comment-count'><b>87</b></div><div id='comment-button' metadata='" + local_record + "' class='comment-button'><b>Comment</b></div><div metadata='" + local_record + "-count' class='share-count'><b>32</b></div><div id='share-button' metadata='" + local_record + "' class='share-button'><b>Share</b></div></div></div>"
 
             post_string = "<div class='profile-header'><img src=" + profile_image + " class='profile-image'></img><div class='name'><b>" + profile_name + "</b><div class='profile-bubble'><b class='handle'>@" + profile_handle + "</b></div></div></div><div class='post-body'>" + updated_local_records_source[local_record][1].replace('``', '<div class="small-spacer"></div>') + "<div class='small-spacer'></div><div id='image-area' class='image-area'>{}</div></div><div id='submit-button' class='reactor'><div id='like-button' metadata='" + local_record + "-like'><img id='" + local_record + "-like' class='" + like_class + "' src='" + like_button_src + "'></img></div><div metadata='" + local_record + "-like-count' class='" + like_count_class + "'>" + current_like_count + "</div></div>"
 
@@ -1192,24 +1012,38 @@ def send_posts():
     else:
 
         return {'content':'', 'cid':'-1', 'nid':'-1'}
+  
+#
 
+#
 
+#
 
+#
 
+#
 
+#
 
+#
 
+#
 
+#
 
+#
 
+#
 
+#
 
+#
 
+#
 
+#
 
-
-
-
+#
 
 # 8888888b.  8888888888        d8888  .d8888b.  88888888888 8888888  .d88888b.  888b    888 
 # 888   Y88b 888              d88888 d88P  Y88b     888       888   d88P" "Y88b 8888b   888 
@@ -1226,8 +1060,6 @@ def send_posts():
 def orb_react():
 
     uuk = request.args['uuk']
-    # new
-
     post_id = request.args['id']
     user_key = request.args['key']
 
@@ -1414,11 +1246,8 @@ def orb_react():
 def orb_post():
 
     uuk = request.args['uuk']
-    # new 
-
     user_key = request.args['key']
-    # var submit_url = "/post?id=0&content=" + encodeURIComponent(encoded_message) + '&uuk=' + encodeURIComponent(uuk) + "&key=" + encodeURIComponent(readCookie("hashpass")) + "";
-
+    
     with open('/root/Orb-Chat/orb_resources/orb_allowed_peers.json','r') as orb_allowed_peers_path:
                                 
         orb_allowed_peers = json.load(orb_allowed_peers_path)
@@ -1520,8 +1349,6 @@ def orb_post():
 
                 return {"message":"success"}
 
-                
-    #
         else:
 
             return {"message":"not authorized"}
@@ -1598,15 +1425,6 @@ def upload_media():
 
             file = request.files['file']
 
-            # if allowed_file(file_name) == True:
-            #     try:
-            #         file.save(os.path.join(application.config['UPLOAD_FOLDER'], file_name))
-            #         return {"message":"success"}
-            #     except:
-            #         return {"message":"failure"}
-            # else:
-            #     return {"message":"unsupported"}
-
             file.save(os.path.join(application.config['UPLOAD_FOLDER'], file_name))
             return {"message":"success"}
 
@@ -1666,49 +1484,3 @@ def upload_media():
 if __name__ == '__main__':
 
     application.run(debug=True, host='0.0.0.0')
-
-#
-
-#
-
-#
-
-#
-
-#
-
-#
-
-#
-
-#
-
-#
-
-#
-
-#
-
-#
-
-#
-
-#
-
-#
-
-#
-
-#  .d8888b.  8888888b.         d8888 888     888 8888888888 Y88b   d88P       d8888 8888888b.  8888888b.  
-# d88P  Y88b 888   Y88b       d88888 888     888 888         Y88b d88P       d88888 888   Y88b 888  "Y88b 
-# 888    888 888    888      d88P888 888     888 888          Y88o88P       d88P888 888    888 888    888 
-# 888        888   d88P     d88P 888 Y88b   d88P 8888888       Y888P       d88P 888 888   d88P 888    888 
-# 888  88888 8888888P"     d88P  888  Y88b d88P  888            888       d88P  888 8888888P"  888    888 
-# 888    888 888 T88b     d88P   888   Y88o88P   888            888      d88P   888 888 T88b   888    888 
-# Y88b  d88P 888  T88b   d8888888888    Y888P    888            888     d8888888888 888  T88b  888  .d88P 
-#  "Y8888P88 888   T88b d88P     888     Y8P     8888888888     888    d88P     888 888   T88b 8888888P"  
-                                                                                                     
-# GRAVEYARD
-                                                                                                                           
-# 888888 888888 888888 888888 888888 888888 888888 888888 888888 888888 888888 888888 888888 888888 88888
-
