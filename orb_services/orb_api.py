@@ -680,9 +680,7 @@ def orb_reg():
                                 
         orb_access_keys = json.load(orb_access_keys_path)
 
-    # del orb_access_keys[join_key]
-
-    # uncomment for prod 
+    del orb_access_keys[join_key]
     
     with open('/root/Orb-Chat/orb_resources/orb_access_keys.json','w') as orb_access_keys_path:
 
